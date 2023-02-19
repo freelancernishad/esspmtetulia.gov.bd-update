@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2023 at 03:09 PM
+-- Generation Time: Feb 19, 2023 at 05:42 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -1166,19 +1166,27 @@ INSERT INTO `sonodnamelists` (`id`, `bnname`, `enname`, `icon`, `template`, `son
 CREATE TABLE `sonods` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_no` varchar(75) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nidNo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobileNo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `occupation` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateOfBirth` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `father_husband` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `father_husbandName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `father_husbandNid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `wifeName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `wifeNid` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `familyMenber` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unionName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `wordNo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `village` int(255) DEFAULT NULL,
+  `holdingNo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'applied',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `sonods`
---
-
-INSERT INTO `sonods` (`id`, `id_no`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(5, '123456', 'approved', '2022-11-03 13:58:35', '2022-11-09 06:07:25', NULL),
-(6, '1023', 'applied', '2022-11-08 16:43:24', '2022-11-08 16:43:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -7521,7 +7529,7 @@ ALTER TABLE `sonodnamelists`
 -- AUTO_INCREMENT for table `sonods`
 --
 ALTER TABLE `sonods`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tax_invoices`
