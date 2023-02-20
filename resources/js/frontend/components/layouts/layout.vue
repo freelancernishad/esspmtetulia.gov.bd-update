@@ -4,7 +4,7 @@
             <header>
                 <div class="topHeader">
                     <div class="row">
-                        <div class="topheaderItem col-md-6 col-6"><span>প্রসূতি সেবা, ইপিআই টিকা ও জন্মনিবন্ধন সহজীকরণ</span></div>
+                        <div class="topheaderItem col-md-6 col-6"><span>সামাজিক সুরুক্ষা</span></div>
                         <div class="topheaderItem col-md-6 col-6 text-right"><span
                                 style="border-right: 1px solid #ffffff85; padding: 8px 10px;margin-right: 9px;">{{
                                         curentdate
@@ -50,12 +50,10 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <router-link class="nav-link" :to="{ name: 'childApplication' }">গর্ভকালীন রেজিস্টেশন</router-link>
+                                            <router-link class="nav-link" :to="{ name: 'childApplication' }">রেজিস্টেশন</router-link>
                                         </li>
 
-                                        <li class="nav-item">
-                                            <router-link class="nav-link" :to="{ name: 'vaxapplication' }">টিকা রেজিস্টেশন</router-link>
-                                        </li>
+                     
 
                                         <li class="nav-item">
                                             <router-link class="nav-link" :to="{ name: 'contact' }">যোগাযোগ

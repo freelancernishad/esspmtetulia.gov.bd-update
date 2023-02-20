@@ -4,8 +4,7 @@
 
             <!-- <div class="panel-heading" style="font-weight: bold; font-size: 20px;background:#159513;text-align:center;color:white">{{ sonodnamedata.bnname }} </div> -->
             <div class="panel-heading"
-                style="font-weight: bold; font-size: 20px;background:#159513;text-align:center;color:white">গর্ভকালীন
-                রেজিস্টেশন </div>
+                style="font-weight: bold; font-size: 20px;background:#159513;text-align:center;color:white">রেজিস্টেশন </div>
 
 
             <div class="form-pannel">
@@ -27,7 +26,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">গর্ভবতী মহিলার নাম<span
+                            <label for="" class="labelColor">সুবিধাভোগীর নাম<span
                                     class="text-danger"></span></label>
                             <input type="text" class="form-control" v-model="form.name" required>
                         </div>
@@ -35,7 +34,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">গর্ভবতী মহিলার জাতীয় পরিচয়পত্র<span
+                            <label for="" class="labelColor">জাতীয় পরিচয়পত্র নম্বর<span
                                     class="text-danger"></span></label>
                             <input type="text" class="form-control" v-model="form.pregnant_woman_nid" required>
                         </div>
@@ -44,7 +43,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">স্বামীর নাম<span class="text-danger"></span></label>
+                            <label for="" class="labelColor">মোবাইল নম্বর<span class="text-danger"></span></label>
                             <input type="text" class="form-control" v-model="form.husband_name" required>
                         </div>
                     </div>
@@ -52,7 +51,7 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">স্বামীর জাতীয় পরিচয়পত্র<span class="text-danger"></span></label>
+                            <label for="" class="labelColor">পেশা<span class="text-danger"></span></label>
                             <input type="text" class="form-control" v-model="form.husband_name_nid" required>
                         </div>
                     </div>
@@ -62,10 +61,68 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">মোবাইল নম্বর</label>
+                            <label for="" class="labelColor">জন্ম তারিখ</label>
                             <input type="text" class="form-control" v-model="form.mobile_no" required>
                         </div>
                     </div>
+
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="labelColor">পিতা/স্বামী</label>
+
+                            select
+
+
+                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="labelColor">পিতা/স্বামীর নাম</label>
+                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="labelColor">পিতা/স্বামীর জাতীয় পরিচয়পত্র নম্বর</label>
+                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="labelColor">স্ত্রীর নাম</label>
+                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="labelColor">স্ত্রীর জাতীয় পরিচয়পত্র নম্বর</label>
+                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="" class="labelColor">পরিবারের সদস্য সংখ্যা</label>
+                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                        </div>
+                    </div>
+
+
+
+
+
 
 
                     <div class="col-md-4">
@@ -164,30 +221,12 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="" class="labelColor">শেষ মাসিকের তারিখ</label>
+                        <label for="" class="labelColor">হোল্ডিং নং</label>
                         <input type="date" class="form-control" v-model="form.date_of_last_menstrual_period" required>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="" class="labelColor">সম্ভাব্য প্রসবের তারিখ</label>
-                        <input type="date" class="form-control" v-model="form.probable_date_of_delivery" required>
-                    </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="" class="labelColor">গ্রাভিড (কত তম গর্ভ)</label>
-                        <input type="number" class="form-control" v-model="form.how_many_wombs" required>
-                    </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="" class="labelColor">কত তম সন্তান </label>
-                        <input type="number" class="form-control" v-model="form.how_many_children" required>
-                    </div>
-                </div>
 
                 </div>
 

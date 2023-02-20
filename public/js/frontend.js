@@ -5199,7 +5199,7 @@ var render = function render() {
       "text-align": "center",
       color: "white"
     }
-  }, [_vm._v("গর্ভকালীন\n                রেজিস্টেশন ")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("রেজিস্টেশন ")]), _vm._v(" "), _c("div", {
     staticClass: "form-pannel"
   }, [_c("div", {
     staticClass: "row"
@@ -5342,7 +5342,193 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("মোবাইল নম্বর")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("জন্ম তারিখ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.mobile_no,
+      expression: "form.mobile_no"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.mobile_no
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "mobile_no", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("পিতা/স্বামী")]), _vm._v("\n\n                            select\n\n\n                            "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.mobile_no,
+      expression: "form.mobile_no"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.mobile_no
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "mobile_no", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("পিতা/স্বামীর নাম")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.mobile_no,
+      expression: "form.mobile_no"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.mobile_no
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "mobile_no", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("পিতা/স্বামীর জাতীয় পরিচয়পত্র নম্বর")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.mobile_no,
+      expression: "form.mobile_no"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.mobile_no
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "mobile_no", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("স্ত্রীর নাম")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.mobile_no,
+      expression: "form.mobile_no"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.mobile_no
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "mobile_no", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("স্ত্রীর জাতীয় পরিচয়পত্র নম্বর")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.mobile_no,
+      expression: "form.mobile_no"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.mobile_no
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "mobile_no", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("পরিবারের সদস্য সংখ্যা")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5685,7 +5871,7 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("শেষ মাসিকের তারিখ")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("হোল্ডিং নং")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5705,99 +5891,6 @@ var render = function render() {
         if ($event.target.composing) return;
 
         _vm.$set(_vm.form, "date_of_last_menstrual_period", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("সম্ভাব্য প্রসবের তারিখ")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.form.probable_date_of_delivery,
-      expression: "form.probable_date_of_delivery"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      required: ""
-    },
-    domProps: {
-      value: _vm.form.probable_date_of_delivery
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.form, "probable_date_of_delivery", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("গ্রাভিড (কত তম গর্ভ)")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.form.how_many_wombs,
-      expression: "form.how_many_wombs"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "number",
-      required: ""
-    },
-    domProps: {
-      value: _vm.form.how_many_wombs
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.form, "how_many_wombs", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("কত তম সন্তান ")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.form.how_many_children,
-      expression: "form.how_many_children"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "number",
-      required: ""
-    },
-    domProps: {
-      value: _vm.form.how_many_children
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.form, "how_many_children", $event.target.value);
       }
     }
   })])])]), _vm._v(" "), _c("div", {
@@ -5910,7 +6003,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("গর্ভবতী মহিলার নাম"), _c("span", {
+  }, [_vm._v("সুবিধাভোগীর নাম"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
@@ -5922,7 +6015,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("গর্ভবতী মহিলার জাতীয় পরিচয়পত্র"), _c("span", {
+  }, [_vm._v("জাতীয় পরিচয়পত্র নম্বর"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
@@ -5934,7 +6027,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("স্বামীর নাম"), _c("span", {
+  }, [_vm._v("মোবাইল নম্বর"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
@@ -5946,7 +6039,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("স্বামীর জাতীয় পরিচয়পত্র"), _c("span", {
+  }, [_vm._v("পেশা"), _c("span", {
     staticClass: "text-danger"
   })]);
 }];
@@ -7393,16 +7486,7 @@ var render = function render() {
         name: "childApplication"
       }
     }
-  }, [_vm._v("গর্ভকালীন রেজিস্টেশন")])], 1), _vm._v(" "), _c("li", {
-    staticClass: "nav-item"
-  }, [_c("router-link", {
-    staticClass: "nav-link",
-    attrs: {
-      to: {
-        name: "vaxapplication"
-      }
-    }
-  }, [_vm._v("টিকা রেজিস্টেশন")])], 1), _vm._v(" "), _c("li", {
+  }, [_vm._v("রেজিস্টেশন")])], 1), _vm._v(" "), _c("li", {
     staticClass: "nav-item"
   }, [_c("router-link", {
     staticClass: "nav-link",
@@ -7500,7 +7584,7 @@ var staticRenderFns = [function () {
 
   return _c("div", {
     staticClass: "topheaderItem col-md-6 col-6"
-  }, [_c("span", [_vm._v("প্রসূতি সেবা, ইপিআই টিকা ও জন্মনিবন্ধন সহজীকরণ")])]);
+  }, [_c("span", [_vm._v("সামাজিক সুরুক্ষা")])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
