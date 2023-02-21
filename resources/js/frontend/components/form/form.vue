@@ -471,6 +471,44 @@ export default {
             console.log(datas)
 
 
+            if(datas=='abedonkari seba grohon koreche'){
+                Swal.fire({
+                    title: 'দুঃখিত',
+                    text: `আপনি ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: `close`,
+
+                })
+            }else if(datas=='abedonkarir pta seba grohon koreche'){
+                Swal.fire({
+                    title: 'দুঃখিত',
+                    text: `আপনার পিতা ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: `close`,
+
+                })
+            }else if(datas=='abedonkarir sami seba grohon koreche'){
+                Swal.fire({
+                    title: 'দুঃখিত',
+                    text: `আপনার স্বামী ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: `close`,
+
+                })
+            }else if(datas=='abedonkarir stri seba grohon koreche'){
+                Swal.fire({
+                    title: 'দুঃখিত',
+                    text: `আপনার স্ত্রী ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: `close`,
+
+                })
+            }
+
 
                 // Swal.fire({
                 //     title: 'অভিনন্দন',

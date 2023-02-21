@@ -348,6 +348,35 @@ class SonodController extends Controller
         $father_husbandNid = $r->father_husbandNid;
         $wifeNid = $r->wifeNid;
 
+        $nidNoCount = Sonod::where('nidNo',$nidNo)->count();
+        $father_husbandNidCount = Sonod::where('father_husbandNid',$father_husbandNid)->count();
+        $wifeNidCount = Sonod::where('wifeNid',$wifeNid)->count();
+
+        if($nidNoCount>0){
+            return 'abedonkari seba grohon koreche';
+        }
+
+        if($father_husbandNidCount>0){
+
+            $father_husbandNidGet = Sonod::where('father_husbandNid',$father_husbandNid)->first();
+            if($father_husbandNidGet->father_husband=='পিতা'){
+                return 'abedonkarir pta seba grohon koreche';
+            }elseif($father_husbandNidGet->father_husband=='স্বামী'){
+                return 'abedonkarir sami seba grohon koreche';
+            }else{
+                return 'abedonkarir pta/sami seba grohon koreche';
+            }
+
+
+        }
+
+
+        if($wifeNidCount>0){
+            return 'abedonkarir stri seba grohon koreche';
+        }
+
+
+
 
 
 
