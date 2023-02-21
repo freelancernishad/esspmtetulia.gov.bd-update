@@ -343,10 +343,17 @@ class SonodController extends Controller
     public function sonod_submit(Request $r)
     {
 
-        $id = $r->id;
+
+        $nidNo = $r->nidNo;
+        $father_husbandNid = $r->father_husbandNid;
+        $wifeNid = $r->wifeNid;
+
+
+
+
+
         $data = $r->all();
         $data['id_no'] = rand(111,999).time();
-        $data['registrationDate'] = date("d-m-Y");
         try {
 
              $sonod =   sonod::create($data);
@@ -880,7 +887,7 @@ class SonodController extends Controller
             // return view('userdocument',compact('row'));
             // return view('card',compact('row'));
 
-            
+
             $pdf = LaravelMpdf::loadView('card', compact('row','firstDose','secondDose','thirthDose','fourthDose','fifthDose','TikaDetials','bcgFirstDose','bcgSecondDose','bcgThirdDose','bcgFourthDose','bcgFifthDose'));
             return $pdf->stream("$row->id_no.pdf");
 

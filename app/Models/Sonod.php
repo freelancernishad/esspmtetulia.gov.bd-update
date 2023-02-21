@@ -22,6 +22,7 @@ class Sonod extends Model
         'father_husbandName',
         'father_husbandNid',
         'wifeName',
+        'wifeNid',
         'familyMenber',
         'division',
         'district',

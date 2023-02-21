@@ -2554,13 +2554,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         month: '',
         year: ''
       },
+      yearsList: {},
+      monthsList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      daysList: [],
       form: {
         id_no: '',
         vataName: '',
         name: '',
         nidNo: '',
         mobileNo: '',
-        husband_name: '',
         occupation: '',
         dateOfBirth: '',
         father_husband: 'পিতা',
@@ -2722,9 +2724,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
+                _this5.form.dateOfBirth = _this5.burthdate.day + '-' + _this5.burthdate.month + '-' + _this5.burthdate.year;
+
                 _this5.$root.$emit('bv::show::modal', _this5.infoModal.id);
 
-              case 1:
+              case 2:
               case "end":
                 return _context5.stop();
             }
@@ -2735,71 +2739,77 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     finalSubmit: function finalSubmit() {
       var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        var payment_type, res, datas;
-        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        var res, datas;
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 _this6.submitLoad = true;
-                payment_type = _this6.getunionInfos.payment_type;
-                _context7.next = 4;
+                _context6.next = 3;
                 return _this6.callApi('post', '/api/sonod/submit', _this6.form);
 
-              case 4:
-                res = _context7.sent;
+              case 3:
+                res = _context6.sent;
                 datas = res.data;
-                Swal.fire({
-                  title: 'অভিনন্দন',
-                  text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u0997\u09B0\u09CD\u09AD\u0995\u09BE\u09B2\u09C0\u09A8 \u09B0\u09C7\u099C\u09BF\u09B8\u09CD\u099F\u09C7\u09B6\u09A8 \u09B8\u09AB\u09B2\u09AD\u09BE\u09AC\u09C7 \u09A6\u09BE\u0996\u09BF\u09B2 \u09B9\u09DF\u09C7\u099B\u09C7",
-                  icon: 'success',
-                  confirmButtonColor: 'green',
-                  confirmButtonText: "Ok"
-                }).then( /*#__PURE__*/function () {
-                  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(result) {
-                    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-                      while (1) {
-                        switch (_context6.prev = _context6.next) {
-                          case 0:
-                            console.log(result);
+                console.log(datas); // Swal.fire({
+                //     title: 'অভিনন্দন',
+                //     text: `আপনার রেজিস্টেশন সফলভাবে দাখিল হয়েছে`,
+                //     icon: 'success',
+                //     confirmButtonColor: 'green',
+                //     confirmButtonText: `Ok`,
+                // }).then(async (result) => {
+                //     console.log(result)
+                //     if (result.isConfirmed) {
+                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
+                //         this.$router.push({ name: 'home' })
+                //     } else if (result.isDenied) {
+                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
+                //     } else if (result.isDismissed) {
+                //         //cancel
+                //         this.$router.push({ name: 'home' })
+                //     }
+                // })
 
-                            if (result.isConfirmed) {
-                              // this.$root.$emit('bv::hide::modal', 'info-modal')
-                              _this6.$router.push({
-                                name: 'home'
-                              });
-                            } else if (result.isDenied) {// this.$root.$emit('bv::hide::modal', 'info-modal')
-                            } else if (result.isDismissed) {
-                              //cancel
-                              _this6.$router.push({
-                                name: 'home'
-                              });
-                            }
-
-                          case 2:
-                          case "end":
-                            return _context6.stop();
-                        }
-                      }
-                    }, _callee6);
-                  }));
-
-                  return function (_x) {
-                    return _ref.apply(this, arguments);
-                  };
-                }());
-
-              case 7:
+              case 6:
               case "end":
-                return _context7.stop();
+                return _context6.stop();
             }
           }
-        }, _callee7);
+        }, _callee6);
       }))();
+    },
+    getdays: function getdays() {
+      var monthName = this.burthdate.month;
+      var year = this.burthdate.year;
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var monthNumber = monthNames.indexOf(monthName);
+      var daysInMonth = new Date(year, monthNumber + 1, 0).getDate(); // console.log(daysInMonth);
+
+      for (var i = 1; i <= daysInMonth; i++) {
+        // console.log(i)
+        this.daysList.push(i);
+      }
     }
   },
   mounted: function mounted() {
     this.getdivisionFun();
+
+    var years = function years(startYear) {
+      var currentYear = new Date().getFullYear(),
+          years = [];
+      startYear = startYear || 1980;
+
+      while (startYear <= currentYear) {
+        years.push(startYear++);
+      }
+
+      return years;
+    };
+
+    this.yearsList = years().sort(function (a, b) {
+      return b - a;
+    });
   }
 });
 
@@ -5215,29 +5225,34 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(0), _vm._v(" "), _c("input", {
+  }, [_vm._m(0), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.form.id_no,
-      expression: "form.id_no"
+      value: _vm.form.vataName,
+      expression: "form.vataName"
     }],
     staticClass: "form-control",
     attrs: {
-      type: "text",
       required: ""
     },
-    domProps: {
-      value: _vm.form.id_no
-    },
     on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
 
-        _vm.$set(_vm.form, "id_no", $event.target.value);
+        _vm.$set(_vm.form, "vataName", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("সহায়তার ধরন নির্বাচন করুন")]), _vm._v(" "), _c("option", [_vm._v("মুক্তিযোদ্ধা ভাতা")]), _vm._v(" "), _c("option", [_vm._v("বয়স্ক ভাতা")]), _vm._v(" "), _c("option", [_vm._v("বিধবা ভাতা")]), _vm._v(" "), _c("option", [_vm._v("প্রসূতি ভাতা")]), _vm._v(" "), _c("option", [_vm._v("প্রতিবন্ধী ভাতা")]), _vm._v(" "), _c("option", [_vm._v("ভিডিজি/ভিজিএফ")]), _vm._v(" "), _c("option", [_vm._v("অন্যান্য")])])])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
@@ -5350,7 +5365,67 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("জন্ম তারিখ")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("জন্ম তারিখ")]), _vm._v(" "), _c("div", {
+    staticClass: "d-flex"
+  }, [_c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.burthdate.year,
+      expression: "burthdate.year"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.burthdate, "year", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("সাল নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.yearsList, function (year) {
+    return _c("option", [_vm._v(_vm._s(year))]);
+  })], 2), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.burthdate.month,
+      expression: "burthdate.month"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      required: ""
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.burthdate, "month", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, _vm.getdays]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("মাস নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.monthsList, function (month) {
+    return _c("option", [_vm._v(_vm._s(month))]);
+  })], 2), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5377,73 +5452,9 @@ var render = function render() {
     attrs: {
       value: ""
     }
-  }, [_vm._v("সাল নির্বাচন করুন")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.burthdate.day,
-      expression: "burthdate.day"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      required: ""
-    },
-    domProps: {
-      value: _vm.burthdate.day
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.burthdate, "day", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.burthdate.month,
-      expression: "burthdate.month"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      required: ""
-    },
-    domProps: {
-      value: _vm.burthdate.month
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.burthdate, "month", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.burthdate.year,
-      expression: "burthdate.year"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      required: ""
-    },
-    domProps: {
-      value: _vm.burthdate.year
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.burthdate, "year", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("তারিখ নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.daysList, function (day) {
+    return _c("option", [_vm._v(_vm._s(day))]);
+  })], 2)])])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
@@ -5944,7 +5955,7 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      type: "date",
+      type: "text",
       required: ""
     },
     domProps: {
@@ -5989,37 +6000,45 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("আইডি নং :")]), _vm._v(" " + _vm._s(_vm.form.id_no))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("গর্ভবতী মহিলার নাম :")]), _vm._v(" " + _vm._s(_vm.form.name))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("সুবিধাভোগীর নাম :")]), _vm._v(" " + _vm._s(_vm.form.name))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("গর্ভবতী মহিলার জাতীয় পরিচয়পত্র :")]), _vm._v(" " + _vm._s(_vm.form.pregnant_woman_nid))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.nidNo))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("স্বামীর নাম :")]), _vm._v(" " + _vm._s(_vm.form.husband_name))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("মোবাইল নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.mobileNo))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("স্বামীর জাতীয় পরিচয়পত্র :")]), _vm._v(" " + _vm._s(_vm.form.husband_name_nid))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("পেশা :")]), _vm._v(" " + _vm._s(_vm.form.occupation))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("মোবাইল নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.mobile_no))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("জন্ম তারিখ :")]), _vm._v(" " + _vm._s(_vm.form.dateOfBirth))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("বিভাগ :")]), _vm._v(" " + _vm._s(_vm.form.division))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("পিতা/স্বামী :")]), _vm._v(" " + _vm._s(_vm.form.father_husband))]), _vm._v(" "), _vm.form.father_husband == "পিতা" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতার নাম :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandName))]) : _vm._e(), _vm._v(" "), _vm.form.father_husband == "স্বামী" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্বামী নাম :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandName))]) : _vm._e(), _vm._v(" "), _vm.form.father_husband == "পিতা" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতার জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandNid))]) : _vm._e(), _vm._v(" "), _vm.form.father_husband == "স্বামী" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্বামী জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandNid))]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্ত্রীর নাম :")]), _vm._v(" " + _vm._s(_vm.form.wifeName))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্ত্রীর জাতীয় পরিচয়পত্র নম্বর  :")]), _vm._v(" " + _vm._s(_vm.form.wifeNid))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পরিবারের সদস্য সংখ্যা :")]), _vm._v(" " + _vm._s(_vm.form.familyMenber))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("বিভাগ :")]), _vm._v(" " + _vm._s(_vm.form.district))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("জেলা :")]), _vm._v(" " + _vm._s(_vm.form.district))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("উপজেলা/থানা :")]), _vm._v(" " + _vm._s(_vm.form.upazila))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("ইউনিয়ন :")]), _vm._v(" " + _vm._s(_vm.form.union))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("ইউনিয়ন :")]), _vm._v(" " + _vm._s(_vm.form.unionName))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("পোষ্ট অফিস :")]), _vm._v(" " + _vm._s(_vm.form.post_office))]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("ওয়ার্ড নং :")]), _vm._v(" " + _vm._s(_vm.form.word_number))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("ওয়ার্ড নং :")]), _vm._v(" " + _vm._s(_vm.form.wordNo))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("গ্রাম/মহল্লা :")]), _vm._v(" " + _vm._s(_vm.form.village))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("শেষ মাসিকের তারিখ :")]), _vm._v(" " + _vm._s(_vm.form.date_of_last_menstrual_period))]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("সম্ভাব্য প্রসবের তারিখ :")]), _vm._v(" " + _vm._s(_vm.form.probable_date_of_delivery))]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("গ্রাভিড (কত তম গর্ভ) :")]), _vm._v(" " + _vm._s(_vm.form.how_many_wombs))]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("কত তম সন্তান :")]), _vm._v(" " + _vm._s(_vm.form.how_many_children))])]), _vm._v(" "), _c("form", {
+  }, [_c("b", [_vm._v("হোল্ডিং নং :")]), _vm._v(" " + _vm._s(_vm.form.holdingNo))])]), _vm._v(" "), _c("form", {
     staticStyle: {
       "margin-top": "50px"
     },
@@ -6055,7 +6074,7 @@ var staticRenderFns = [function () {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("আইডি নং"), _c("span", {
+  }, [_vm._v("সহায়তার ধরন"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
@@ -26450,7 +26469,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nsection.vh-100[data-v-2a1c1b9c] {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    width: 100%;\n}\n.blurerror input[data-v-2a1c1b9c] {\r\n    border: 1px solid red !important;\n}\n.blurerror label[data-v-2a1c1b9c] {\r\n    color: red !important;\n}\n.blursuccess input[data-v-2a1c1b9c] {\r\n    border: 1px solid green !important;\n}\n.blursuccess label[data-v-2a1c1b9c] {\r\n    color: green !important;\n}\n.divider[data-v-2a1c1b9c]:after,\r\n.divider[data-v-2a1c1b9c]:before {\r\n    content: \"\";\r\n    flex: 1;\r\n    height: 1px;\r\n    background: #eee;\n}\n*[data-v-2a1c1b9c],\r\n*[data-v-2a1c1b9c]:focus {\r\n    outline: none;\n}\r\n\r\n/* .form{\r\n  width: 500px;\r\n  margin: 0 auto;\r\n  margin-top: 150px;\r\n  font-family: sans-serif;\r\n  background: #fff\r\n} */\n.form-item[data-v-2a1c1b9c] {\r\n    position: relative;\r\n    margin-bottom: 15px;\n}\n.form-item input[data-v-2a1c1b9c] {\r\n    display: block;\r\n    width: 100%;\r\n    height: 40px;\r\n    background: transparent;\r\n    border: solid 1px #ccc;\r\n    transition: all 0.3s ease;\r\n    padding: 0 15px;\n}\n.form-item input[data-v-2a1c1b9c]:focus {\r\n    border-color: blue;\n}\n.form-item label[data-v-2a1c1b9c] {\r\n    position: absolute;\r\n    cursor: text;\r\n    z-index: 2;\r\n    top: 13px;\r\n    left: 10px;\r\n    font-size: 12px;\r\n    font-weight: bold;\r\n    background: #fff;\r\n    padding: 0 10px;\r\n    color: #999;\r\n    transition: all 0.3s ease;\n}\n.form-item input:focus+label[data-v-2a1c1b9c],\r\n.form-item input:valid+label[data-v-2a1c1b9c] {\r\n    font-size: 11px;\r\n    top: -5px;\n}\n.form-item input:focus+label[data-v-2a1c1b9c] {\r\n    color: blue;\n}\n.loginForm[data-v-2a1c1b9c] {\r\n    width: 370px !important;\r\n    margin: 0 auto;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%,-50%);\n}\n.col-md-12.col-lg-12.col-xl-12.offset-xl-1[data-v-2a1c1b9c] {\r\n    height: 100vh;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nsection.vh-100[data-v-2a1c1b9c] {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    width: 100%;\n}\n.blurerror input[data-v-2a1c1b9c] {\n    border: 1px solid red !important;\n}\n.blurerror label[data-v-2a1c1b9c] {\n    color: red !important;\n}\n.blursuccess input[data-v-2a1c1b9c] {\n    border: 1px solid green !important;\n}\n.blursuccess label[data-v-2a1c1b9c] {\n    color: green !important;\n}\n.divider[data-v-2a1c1b9c]:after,\n.divider[data-v-2a1c1b9c]:before {\n    content: \"\";\n    flex: 1;\n    height: 1px;\n    background: #eee;\n}\n*[data-v-2a1c1b9c],\n*[data-v-2a1c1b9c]:focus {\n    outline: none;\n}\n\n/* .form{\n  width: 500px;\n  margin: 0 auto;\n  margin-top: 150px;\n  font-family: sans-serif;\n  background: #fff\n} */\n.form-item[data-v-2a1c1b9c] {\n    position: relative;\n    margin-bottom: 15px;\n}\n.form-item input[data-v-2a1c1b9c] {\n    display: block;\n    width: 100%;\n    height: 40px;\n    background: transparent;\n    border: solid 1px #ccc;\n    transition: all 0.3s ease;\n    padding: 0 15px;\n}\n.form-item input[data-v-2a1c1b9c]:focus {\n    border-color: blue;\n}\n.form-item label[data-v-2a1c1b9c] {\n    position: absolute;\n    cursor: text;\n    z-index: 2;\n    top: 13px;\n    left: 10px;\n    font-size: 12px;\n    font-weight: bold;\n    background: #fff;\n    padding: 0 10px;\n    color: #999;\n    transition: all 0.3s ease;\n}\n.form-item input:focus+label[data-v-2a1c1b9c],\n.form-item input:valid+label[data-v-2a1c1b9c] {\n    font-size: 11px;\n    top: -5px;\n}\n.form-item input:focus+label[data-v-2a1c1b9c] {\n    color: blue;\n}\n.loginForm[data-v-2a1c1b9c] {\n    width: 370px !important;\n    margin: 0 auto;\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%,-50%);\n}\n.col-md-12.col-lg-12.col-xl-12.offset-xl-1[data-v-2a1c1b9c] {\n    height: 100vh;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26498,7 +26517,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\r\n/* stylelint-disable selector-list-comma-newline-after */\n.blog-header {\r\n    line-height: 1;\r\n    border-bottom: 1px solid #e5e5e5;\n}\n.blog-header-logo {\r\n    font-family: \"Playfair Display\", Georgia, \"Times New Roman\", serif;\r\n    font-size: 2.25rem;\n}\n.blog-header-logo:hover {\r\n    text-decoration: none;\n}\nh1,\r\nh2,\r\nh3,\r\nh4,\r\nh5,\r\nh6 {\r\n    font-family: \"Playfair Display\", Georgia, \"Times New Roman\", serif;\n}\n.display-4 {\r\n    font-size: 2.5rem;\n}\n@media (min-width: 768px) {\n.display-4 {\r\n        font-size: 3rem;\n}\n}\n.nav-scroller {\r\n    position: relative;\r\n    z-index: 2;\r\n    height: 2.75rem;\r\n    overflow-y: hidden;\n}\n.nav-scroller .nav {\r\n    display: flex;\r\n    flex-wrap: nowrap;\r\n    padding-bottom: 1rem;\r\n    margin-top: -1px;\r\n    overflow-x: auto;\r\n    text-align: center;\r\n    white-space: nowrap;\r\n    -webkit-overflow-scrolling: touch;\n}\n.nav-scroller .nav-link {\r\n    padding-top: .75rem;\r\n    padding-bottom: .75rem;\r\n    font-size: .875rem;\n}\n.card-img-right {\r\n    height: 100%;\r\n    border-radius: 0 3px 3px 0;\n}\n.flex-auto {\r\n    flex: 0 0 auto;\n}\n.h-250 {\r\n    height: 250px;\n}\n@media (min-width: 768px) {\n.h-md-250 {\r\n        height: 250px;\n}\n}\r\n/* Pagination */\n.blog-pagination {\r\n    margin-bottom: 4rem;\n}\n.blog-pagination>.btn {\r\n    border-radius: 2rem;\n}\r\n/*\r\n * Blog posts\r\n */\n.blog-post {\r\n    margin-bottom: 4rem;\n}\n.blog-post-title {\r\n    margin-bottom: .25rem;\r\n    font-size: 2.5rem;\n}\n.blog-post-meta {\r\n    margin-bottom: 1.25rem;\r\n    color: #999;\n}\r\n/*\r\n * Footer\r\n */\n.blog-footer {\r\n    padding: 2.5rem 0;\r\n    color: #999;\r\n    text-align: center;\r\n    background-color: #f9f9f9;\r\n    border-top: .05rem solid #e5e5e5;\n}\n.blog-footer p:last-child {\r\n    margin-bottom: 0;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n/* stylelint-disable selector-list-comma-newline-after */\n.blog-header {\n    line-height: 1;\n    border-bottom: 1px solid #e5e5e5;\n}\n.blog-header-logo {\n    font-family: \"Playfair Display\", Georgia, \"Times New Roman\", serif;\n    font-size: 2.25rem;\n}\n.blog-header-logo:hover {\n    text-decoration: none;\n}\nh1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n    font-family: \"Playfair Display\", Georgia, \"Times New Roman\", serif;\n}\n.display-4 {\n    font-size: 2.5rem;\n}\n@media (min-width: 768px) {\n.display-4 {\n        font-size: 3rem;\n}\n}\n.nav-scroller {\n    position: relative;\n    z-index: 2;\n    height: 2.75rem;\n    overflow-y: hidden;\n}\n.nav-scroller .nav {\n    display: flex;\n    flex-wrap: nowrap;\n    padding-bottom: 1rem;\n    margin-top: -1px;\n    overflow-x: auto;\n    text-align: center;\n    white-space: nowrap;\n    -webkit-overflow-scrolling: touch;\n}\n.nav-scroller .nav-link {\n    padding-top: .75rem;\n    padding-bottom: .75rem;\n    font-size: .875rem;\n}\n.card-img-right {\n    height: 100%;\n    border-radius: 0 3px 3px 0;\n}\n.flex-auto {\n    flex: 0 0 auto;\n}\n.h-250 {\n    height: 250px;\n}\n@media (min-width: 768px) {\n.h-md-250 {\n        height: 250px;\n}\n}\n/* Pagination */\n.blog-pagination {\n    margin-bottom: 4rem;\n}\n.blog-pagination>.btn {\n    border-radius: 2rem;\n}\n/*\n * Blog posts\n */\n.blog-post {\n    margin-bottom: 4rem;\n}\n.blog-post-title {\n    margin-bottom: .25rem;\n    font-size: 2.5rem;\n}\n.blog-post-meta {\n    margin-bottom: 1.25rem;\n    color: #999;\n}\n/*\n * Footer\n */\n.blog-footer {\n    padding: 2.5rem 0;\n    color: #999;\n    text-align: center;\n    background-color: #f9f9f9;\n    border-top: .05rem solid #e5e5e5;\n}\n.blog-footer p:last-child {\n    margin-bottom: 0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26594,7 +26613,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.app-heading[data-v-032fa800] {\r\n    text-align: center;\r\n    margin: 32px 0;\r\n    font-size: 23px;\r\n    border-bottom: 1px solid #159513;\r\n    color: #ffffff;\r\n    background: #255f95;\n}\n.form-pannel[data-v-032fa800] {\r\n    border: 1px solid #159513;\r\n    padding: 25px 25px 25px 25px;\n}\n.panel-heading[data-v-032fa800] {\r\n    padding: 11px 0px;\r\n    border-top-right-radius: 6px;\r\n    border-top-left-radius: 6px;\r\n    margin-top: 20px;\n}\n.form-pannel[data-v-032fa800] {\r\n    border-bottom-left-radius: 6px;\r\n    border-bottom-right-radius: 6px;\n}\n.dropdown-menu[data-v-032fa800] {\r\n    z-index: 99999;\n}\n.labelColor[data-v-032fa800] {\r\n    color: #493eff;\r\n    font-weight: 600;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.app-heading[data-v-032fa800] {\n    text-align: center;\n    margin: 32px 0;\n    font-size: 23px;\n    border-bottom: 1px solid #159513;\n    color: #ffffff;\n    background: #255f95;\n}\n.form-pannel[data-v-032fa800] {\n    border: 1px solid #159513;\n    padding: 25px 25px 25px 25px;\n}\n.panel-heading[data-v-032fa800] {\n    padding: 11px 0px;\n    border-top-right-radius: 6px;\n    border-top-left-radius: 6px;\n    margin-top: 20px;\n}\n.form-pannel[data-v-032fa800] {\n    border-bottom-left-radius: 6px;\n    border-bottom-right-radius: 6px;\n}\n.dropdown-menu[data-v-032fa800] {\n    z-index: 99999;\n}\n.labelColor[data-v-032fa800] {\n    color: #493eff;\n    font-weight: 600;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26618,7 +26637,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.contact-form {\r\n    font-family: 16px;\r\n    margin: 0 auto;\r\n    max-width: 600px;\r\n    width: 100%;\n}\n.contact-form .separator {\r\n    border-bottom: solid 1px #ccc;\r\n    margin-bottom: 15px;\n}\n.contact-form .form {\r\n    display: flex;\r\n    flex-direction: column;\r\n    font-size: 16px;\n}\n.contact-form_title {\r\n    color: #333;\r\n    text-align: left;\r\n    font-size: 28px;\n}\n.contact-form textarea {\r\n    resize: none;\n}\n.contact-form .button {\r\n    background: #da552f;\r\n    border: solid 1px #da552f;\r\n    color: white;\r\n    cursor: pointer;\r\n    padding: 10px 50px;\r\n    text-align: center;\r\n    text-transform: uppercase;\n}\n.contact-form .button:hover {\r\n    background: #ea532a;\r\n    border: solid 1px #ea532a;\n}\n.contact-form input[type=\"email\"],\r\n.contact-form input[type=\"text\"],\r\n.contact-form textarea,\r\n.contact-form .button {\r\n    font-size: 15px;\r\n    border-radius: 3px\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.contact-form {\n    font-family: 16px;\n    margin: 0 auto;\n    max-width: 600px;\n    width: 100%;\n}\n.contact-form .separator {\n    border-bottom: solid 1px #ccc;\n    margin-bottom: 15px;\n}\n.contact-form .form {\n    display: flex;\n    flex-direction: column;\n    font-size: 16px;\n}\n.contact-form_title {\n    color: #333;\n    text-align: left;\n    font-size: 28px;\n}\n.contact-form textarea {\n    resize: none;\n}\n.contact-form .button {\n    background: #da552f;\n    border: solid 1px #da552f;\n    color: white;\n    cursor: pointer;\n    padding: 10px 50px;\n    text-align: center;\n    text-transform: uppercase;\n}\n.contact-form .button:hover {\n    background: #ea532a;\n    border: solid 1px #ea532a;\n}\n.contact-form input[type=\"email\"],\n.contact-form input[type=\"text\"],\n.contact-form textarea,\n.contact-form .button {\n    font-size: 15px;\n    border-radius: 3px\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26666,7 +26685,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\na.prev[data-v-a8b6818e] {\r\n    display: none !important;\n}\na.next[data-v-a8b6818e] {\r\n    display: none !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\na.prev[data-v-a8b6818e] {\n    display: none !important;\n}\na.next[data-v-a8b6818e] {\n    display: none !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26714,7 +26733,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nul.footerList li a:hover {\r\n    background: #fff !important;\r\n    color: #0e56a1 !important;\r\n    text-decoration: none !important;\r\n    border-radius: 0 !important;\n}\nul.footerList li a {\r\n    display: block;\r\n    padding: 6px 0;\r\n    font-size: 13px;\r\n    color: #0e0e0e;\r\n    border-right: 0px dotted #5a5454;\n}\nnav.navbar.navbar-expand-lg.navbar-light.bg-light {\r\n    background: #892d53  !important;\n}\nli.nav-item a, .dropdown-item {\r\n    color: white !important;\n}\n.dropdown-menu {\r\n    background: #9e5bba;\n}\n.dropdown-item.active,\r\n.dropdown-item:active {\r\n    background-color: #159513ed;\n}\n.dropdown-item:focus,\r\n.dropdown-item:hover {\r\n    background-color: #159513ed;\n}\nnav.navbar.navbar-expand-lg.navbar-light.bg-light {\r\n    padding: 0 6px;\n}\n@media (min-width:992px) {\nli.nav-item {\r\n        border-right: 1px solid white;\n}\n.dropdown-item {\r\n        border-bottom: 1px solid #89209b;\n}\n.dropdown-item:first-child {\r\n        border-top: 1px solid #89209b;\n}\n}\r\n/* .dropdown:hover>.dropdown-menu{\r\n\t\tdisplay: block;\r\n\t} */\r\n/* .serviceBox {\r\n    border-top-right-radius: 30px;\r\n    border-bottom-left-radius: 30px;\r\n} */\n.defaltColor {\r\n    background: var(--defaultColor) !important;\n}\n.defaltTextColor {\r\n    color: var(--defaultColor) !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nul.footerList li a:hover {\n    background: #fff !important;\n    color: #0e56a1 !important;\n    text-decoration: none !important;\n    border-radius: 0 !important;\n}\nul.footerList li a {\n    display: block;\n    padding: 6px 0;\n    font-size: 13px;\n    color: #0e0e0e;\n    border-right: 0px dotted #5a5454;\n}\nnav.navbar.navbar-expand-lg.navbar-light.bg-light {\n    background: #892d53  !important;\n}\nli.nav-item a, .dropdown-item {\n    color: white !important;\n}\n.dropdown-menu {\n    background: #9e5bba;\n}\n.dropdown-item.active,\n.dropdown-item:active {\n    background-color: #159513ed;\n}\n.dropdown-item:focus,\n.dropdown-item:hover {\n    background-color: #159513ed;\n}\nnav.navbar.navbar-expand-lg.navbar-light.bg-light {\n    padding: 0 6px;\n}\n@media (min-width:992px) {\nli.nav-item {\n        border-right: 1px solid white;\n}\n.dropdown-item {\n        border-bottom: 1px solid #89209b;\n}\n.dropdown-item:first-child {\n        border-top: 1px solid #89209b;\n}\n}\n/* .dropdown:hover>.dropdown-menu{\n\t\tdisplay: block;\n\t} */\n/* .serviceBox {\n    border-top-right-radius: 30px;\n    border-bottom-left-radius: 30px;\n} */\n.defaltColor {\n    background: var(--defaultColor) !important;\n}\n.defaltTextColor {\n    color: var(--defaultColor) !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26738,7 +26757,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\na.prev[data-v-38351579] {\r\n    display: none !important;\n}\na.next[data-v-38351579] {\r\n    display: none !important;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\na.prev[data-v-38351579] {\n    display: none !important;\n}\na.next[data-v-38351579] {\n    display: none !important;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26762,7 +26781,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.border-dash {\r\n  border: 1px dashed #dee2e6;\n}\n.logo-img img {\r\n  width: 70px;\n}\n.header-right-logo img {\r\n  width: 100px;\n}\n.header-text {\r\n  font-size: 16px;\r\n  line-height: 70px;\n}\n.header-text p:first-child {\r\n  font-weight: 500;\r\n  line-height: 18px;\r\n  margin-bottom: 0px;\r\n  margin-top: 18px;\n}\n.header-text p:last-child {\r\n  line-height: 18px;\n}\n.verification-sec h2:first-child {\r\n  font-size: 30px;\r\n  color: green;\r\n  font-weight: bold;\n}\n.verification-sec h2:last-child {\r\n  font-size: 22px;\r\n  color: green;\r\n  font-weight: 350;\n}\n.beneficiary {\r\n  background-color: #eeeeee;\r\n  border: 1px solid #dee2e6;\n}\n.beneficiary h3 {\r\n  text-align: center;\r\n  font-size: 14px;\r\n  font-weight: bold;\n}\n.beneficiary-details-right {\r\n  font-size: 13px;\r\n  text-align: right;\r\n  padding: 5px;\r\n  overflow-wrap: break-word;\n}\n.beneficiary-details-left {\r\n  font-size: 13px;\r\n  text-align: left;\r\n  padding: 5px;\r\n  overflow-wrap: break-word;\n}\n.lower-does-1 h3 {\r\n  font-size: 13px;\r\n  text-align: right;\r\n  padding: 5px;\r\n  font-weight: bold;\n}\n.lower-does-2 h3 {\r\n  font-size: 13px;\r\n  text-align: center;\r\n  padding: 5px;\r\n  font-weight: bold;\n}\n.lower-does-3 h3 {\r\n  font-size: 13px;\r\n  text-align: left;\r\n  padding: 5px;\r\n  font-weight: bold;\n}\n.lower-does-part-1 h3 {\r\n  font-size: 13px;\r\n  text-align: right;\r\n  padding: 5px;\r\n  overflow-wrap: break-word;\r\n  text-transform: capitalize;\n}\n.lower-does-part-2 h3 {\r\n  font-size: 13px;\r\n  text-align: center;\r\n  padding: 5px;\r\n  overflow-wrap: break-word;\n}\n.lower-does-part-3 h3 {\r\n  font-size: 13px;\r\n  text-align: left;\r\n  padding: 5px;\r\n  overflow-wrap: break-word;\n}\n.credit-Logo img {\r\n  max-width: 80%;\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.border-dash {\n  border: 1px dashed #dee2e6;\n}\n.logo-img img {\n  width: 70px;\n}\n.header-right-logo img {\n  width: 100px;\n}\n.header-text {\n  font-size: 16px;\n  line-height: 70px;\n}\n.header-text p:first-child {\n  font-weight: 500;\n  line-height: 18px;\n  margin-bottom: 0px;\n  margin-top: 18px;\n}\n.header-text p:last-child {\n  line-height: 18px;\n}\n.verification-sec h2:first-child {\n  font-size: 30px;\n  color: green;\n  font-weight: bold;\n}\n.verification-sec h2:last-child {\n  font-size: 22px;\n  color: green;\n  font-weight: 350;\n}\n.beneficiary {\n  background-color: #eeeeee;\n  border: 1px solid #dee2e6;\n}\n.beneficiary h3 {\n  text-align: center;\n  font-size: 14px;\n  font-weight: bold;\n}\n.beneficiary-details-right {\n  font-size: 13px;\n  text-align: right;\n  padding: 5px;\n  overflow-wrap: break-word;\n}\n.beneficiary-details-left {\n  font-size: 13px;\n  text-align: left;\n  padding: 5px;\n  overflow-wrap: break-word;\n}\n.lower-does-1 h3 {\n  font-size: 13px;\n  text-align: right;\n  padding: 5px;\n  font-weight: bold;\n}\n.lower-does-2 h3 {\n  font-size: 13px;\n  text-align: center;\n  padding: 5px;\n  font-weight: bold;\n}\n.lower-does-3 h3 {\n  font-size: 13px;\n  text-align: left;\n  padding: 5px;\n  font-weight: bold;\n}\n.lower-does-part-1 h3 {\n  font-size: 13px;\n  text-align: right;\n  padding: 5px;\n  overflow-wrap: break-word;\n  text-transform: capitalize;\n}\n.lower-does-part-2 h3 {\n  font-size: 13px;\n  text-align: center;\n  padding: 5px;\n  overflow-wrap: break-word;\n}\n.lower-does-part-3 h3 {\n  font-size: 13px;\n  text-align: left;\n  padding: 5px;\n  overflow-wrap: break-word;\n}\n.credit-Logo img {\n  max-width: 80%;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -26786,7 +26805,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\r\n/*form styles*/\n#msform {\r\n    text-align: center;\r\n    position: relative;\r\n    margin-top: 20px;\n}\r\n/*progressbar*/\n#progressbar {\r\n    margin-bottom: 30px;\r\n    overflow: hidden;\r\n    color: lightgrey;\n}\n#progressbar .active {\r\n    color: #000000;\n}\n#progressbar li {\r\n    list-style-type: none;\r\n    font-size: 12px;\r\n    width: 20%;\r\n    float: left;\r\n    position: relative;\n}\r\n/*Icons in the ProgressBar*/\n#progressbar #account:before {\r\n\r\n    content: \"Done\";\n}\n#progressbar #personal:before {\r\n    font-family: FontAwesome;\r\n    content: \"Done\";\n}\n#progressbar #payment:before {\r\n    font-family: FontAwesome;\r\n    content: \"Done\";\n}\n#progressbar #confirm:before {\r\n    font-family: FontAwesome;\r\n    content: \"Done\";\n}\r\n/*ProgressBar before any progress*/\n#progressbar li:before {\r\n    width: 50px;\r\n    height: 50px;\r\n    line-height: 45px;\r\n    display: block;\r\n    font-size: 18px;\r\n    color: #ffffff;\r\n    background: lightgray;\r\n    border-radius: 50%;\r\n    margin: 0 auto 10px auto;\r\n    padding: 2px;\n}\r\n/*ProgressBar connectors*/\n#progressbar li:after {\r\n    content: '';\r\n    width: 100%;\r\n    height: 2px;\r\n    background: lightgray;\r\n    position: absolute;\r\n    left: 0;\r\n    top: 25px;\r\n    z-index: -1;\n}\r\n/*Color number of the step and the connector before it*/\n#progressbar li.active:before,\r\n#progressbar li.active:after {\r\n    background: skyblue;\n}\r\n/*Imaged Radio Buttons*/\n.radio-group {\r\n    position: relative;\r\n    margin-bottom: 25px;\n}\n.radio {\r\n    display: inline-block;\r\n    width: 204;\r\n    height: 104;\r\n    border-radius: 0;\r\n    background: lightblue;\r\n    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);\r\n    box-sizing: border-box;\r\n    cursor: pointer;\r\n    margin: 8px 2px;\n}\n.radio:hover {\r\n    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);\n}\n.radio.selected {\r\n    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);\n}\r\n/*Fit image in bootstrap div*/\n.fit-image {\r\n    width: 100%;\r\n    -o-object-fit: cover;\r\n       object-fit: cover;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n/*form styles*/\n#msform {\n    text-align: center;\n    position: relative;\n    margin-top: 20px;\n}\n/*progressbar*/\n#progressbar {\n    margin-bottom: 30px;\n    overflow: hidden;\n    color: lightgrey;\n}\n#progressbar .active {\n    color: #000000;\n}\n#progressbar li {\n    list-style-type: none;\n    font-size: 12px;\n    width: 20%;\n    float: left;\n    position: relative;\n}\n/*Icons in the ProgressBar*/\n#progressbar #account:before {\n\n    content: \"Done\";\n}\n#progressbar #personal:before {\n    font-family: FontAwesome;\n    content: \"Done\";\n}\n#progressbar #payment:before {\n    font-family: FontAwesome;\n    content: \"Done\";\n}\n#progressbar #confirm:before {\n    font-family: FontAwesome;\n    content: \"Done\";\n}\n/*ProgressBar before any progress*/\n#progressbar li:before {\n    width: 50px;\n    height: 50px;\n    line-height: 45px;\n    display: block;\n    font-size: 18px;\n    color: #ffffff;\n    background: lightgray;\n    border-radius: 50%;\n    margin: 0 auto 10px auto;\n    padding: 2px;\n}\n/*ProgressBar connectors*/\n#progressbar li:after {\n    content: '';\n    width: 100%;\n    height: 2px;\n    background: lightgray;\n    position: absolute;\n    left: 0;\n    top: 25px;\n    z-index: -1;\n}\n/*Color number of the step and the connector before it*/\n#progressbar li.active:before,\n#progressbar li.active:after {\n    background: skyblue;\n}\n/*Imaged Radio Buttons*/\n.radio-group {\n    position: relative;\n    margin-bottom: 25px;\n}\n.radio {\n    display: inline-block;\n    width: 204;\n    height: 104;\n    border-radius: 0;\n    background: lightblue;\n    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);\n    box-sizing: border-box;\n    cursor: pointer;\n    margin: 8px 2px;\n}\n.radio:hover {\n    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);\n}\n.radio.selected {\n    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);\n}\n/*Fit image in bootstrap div*/\n.fit-image {\n    width: 100%;\n    -o-object-fit: cover;\n       object-fit: cover;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

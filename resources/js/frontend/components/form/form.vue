@@ -18,8 +18,18 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">আইডি নং<span class="text-danger"></span></label>
-                            <input type="text" class="form-control" v-model="form.id_no" required>
+                            <label for="" class="labelColor">সহায়তার ধরন<span class="text-danger"></span></label>
+                            <select class="form-control" v-model="form.vataName" required>
+                                <option value="">সহায়তার ধরন নির্বাচন করুন</option>
+                                <option>মুক্তিযোদ্ধা ভাতা</option>
+                                <option>বয়স্ক ভাতা</option>
+                                <option>বিধবা ভাতা</option>
+                                <option>প্রসূতি ভাতা</option>
+                                <option>প্রতিবন্ধী ভাতা</option>
+                                <option>ভিডিজি/ভিজিএফ</option>
+                                <option>অন্যান্য</option>
+                            </select>
+
                         </div>
                     </div>
 
@@ -62,15 +72,23 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="" class="labelColor">জন্ম তারিখ</label>
-
-                            <select class="form-control" v-model="burthdate.day" required>
+                            <div class="d-flex">
+                            <select class="form-control" v-model="burthdate.year" required>
                                 <option value="">সাল নির্বাচন করুন</option>
+                                <option v-for="year in yearsList">{{ year }}</option>
                             </select>
 
+                            <select class="form-control" v-model="burthdate.month" @change="getdays" required>
+                                <option value="">মাস নির্বাচন করুন</option>
+                                <option v-for="month in monthsList">{{ month }}</option>
+                            </select>
 
-                            <input type="text" class="form-control" v-model="burthdate.day" required>
-                            <input type="text" class="form-control" v-model="burthdate.month" required>
-                            <input type="text" class="form-control" v-model="burthdate.year" required>
+                            <select class="form-control" v-model="burthdate.day" required>
+                                <option value="">তারিখ নির্বাচন করুন</option>
+                                <option v-for="day in daysList">{{ day }}</option>
+                            </select>
+                        </div>
+
                         </div>
                     </div>
 
@@ -225,7 +243,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="" class="labelColor">হোল্ডিং নং</label>
-                        <input type="date" class="form-control" v-model="form.holdingNo" required>
+                        <input type="text" class="form-control" v-model="form.holdingNo" required>
                     </div>
                 </div>
 
@@ -267,22 +285,27 @@
 
 
 <div class="col-md-4"><b>আইডি নং :</b> {{ form.id_no }}</div>
-<div class="col-md-4"><b>গর্ভবতী মহিলার নাম :</b> {{ form.name }}</div>
-<div class="col-md-4"><b>গর্ভবতী মহিলার জাতীয় পরিচয়পত্র :</b> {{ form.pregnant_woman_nid }}</div>
-<div class="col-md-4"><b>স্বামীর নাম :</b> {{ form.husband_name }}</div>
-<div class="col-md-4"><b>স্বামীর জাতীয় পরিচয়পত্র :</b> {{ form.husband_name_nid }}</div>
-<div class="col-md-4"><b>মোবাইল নম্বর :</b> {{ form.mobile_no }}</div>
-<div class="col-md-4"><b>বিভাগ :</b> {{ form.division }}</div>
+<div class="col-md-4"><b>সুবিধাভোগীর নাম :</b> {{ form.name }}</div>
+<div class="col-md-4"><b>জাতীয় পরিচয়পত্র নম্বর :</b> {{ form.nidNo }}</div>
+<div class="col-md-4"><b>মোবাইল নম্বর :</b> {{ form.mobileNo }}</div>
+<div class="col-md-4"><b>পেশা :</b> {{ form.occupation }}</div>
+<div class="col-md-4"><b>জন্ম তারিখ :</b> {{ form.dateOfBirth }}</div>
+<div class="col-md-4"><b>পিতা/স্বামী :</b> {{ form.father_husband }}</div>
+<div class="col-md-4"  v-if="form.father_husband=='পিতা'"><b>পিতার নাম :</b> {{ form.father_husbandName }}</div>
+<div class="col-md-4"  v-if="form.father_husband=='স্বামী'"><b>স্বামী নাম :</b> {{ form.father_husbandName }}</div>
+<div class="col-md-4"  v-if="form.father_husband=='পিতা'"><b>পিতার জাতীয় পরিচয়পত্র নম্বর :</b> {{ form.father_husbandNid }}</div>
+<div class="col-md-4"  v-if="form.father_husband=='স্বামী'"><b>স্বামী জাতীয় পরিচয়পত্র নম্বর :</b> {{ form.father_husbandNid }}</div>
+<div class="col-md-4" ><b>স্ত্রীর নাম :</b> {{ form.wifeName }}</div>
+<div class="col-md-4" ><b>স্ত্রীর জাতীয় পরিচয়পত্র নম্বর  :</b> {{ form.wifeNid }}</div>
+<div class="col-md-4" ><b>পরিবারের সদস্য সংখ্যা :</b> {{ form.familyMenber }}</div>
+<div class="col-md-4"><b>বিভাগ :</b> {{ form.district }}</div>
 <div class="col-md-4"><b>জেলা :</b> {{ form.district }}</div>
 <div class="col-md-4"><b>উপজেলা/থানা :</b> {{ form.upazila }}</div>
-<div class="col-md-4"><b>ইউনিয়ন :</b> {{ form.union }}</div>
-<div class="col-md-4"><b>পোষ্ট অফিস :</b> {{ form.post_office }}</div>
-<div class="col-md-4"><b>ওয়ার্ড নং :</b> {{ form.word_number }}</div>
+<div class="col-md-4"><b>ইউনিয়ন :</b> {{ form.unionName }}</div>
+<div class="col-md-4"><b>ওয়ার্ড নং :</b> {{ form.wordNo }}</div>
 <div class="col-md-4"><b>গ্রাম/মহল্লা :</b> {{ form.village }}</div>
-<div class="col-md-4"><b>শেষ মাসিকের তারিখ :</b> {{ form.date_of_last_menstrual_period }}</div>
-<div class="col-md-4"><b>সম্ভাব্য প্রসবের তারিখ :</b> {{ form.probable_date_of_delivery }}</div>
-<div class="col-md-4"><b>গ্রাভিড (কত তম গর্ভ) :</b> {{ form.how_many_wombs }}</div>
-<div class="col-md-4"><b>কত তম সন্তান :</b> {{ form.how_many_children }}</div>
+<div class="col-md-4"><b>হোল্ডিং নং :</b> {{ form.holdingNo }}</div>
+
 
 
 
@@ -321,13 +344,32 @@ export default {
                 year:'',
             },
 
+            yearsList:{},
+            monthsList:[
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December',
+                ],
+                daysList:[],
+
+
+
+
             form: {
                 id_no:'',
                 vataName:'',
                 name:'',
                 nidNo:'',
                 mobileNo:'',
-                husband_name:'',
                 occupation:'',
 
                 dateOfBirth:'',
@@ -415,44 +457,94 @@ export default {
 
         async onSubmit() {
 
+            this.form.dateOfBirth = this.burthdate.day+'-'+this.burthdate.month+'-'+this.burthdate.year;
+
                 this.$root.$emit('bv::show::modal', this.infoModal.id)
         },
         async finalSubmit() {
             this.submitLoad = true;
 
-            var payment_type = this.getunionInfos.payment_type;
+
 
             var res = await this.callApi('post', '/api/sonod/submit', this.form);
             var datas = res.data;
+            console.log(datas)
 
-                Swal.fire({
-                    title: 'অভিনন্দন',
-                    text: `আপনার গর্ভকালীন রেজিস্টেশন সফলভাবে দাখিল হয়েছে`,
-                    icon: 'success',
-                    confirmButtonColor: 'green',
-                    confirmButtonText: `Ok`,
 
-                }).then(async (result) => {
-                    console.log(result)
-                    if (result.isConfirmed) {
-                        // this.$root.$emit('bv::hide::modal', 'info-modal')
-                        this.$router.push({ name: 'home' })
-                    } else if (result.isDenied) {
-                        // this.$root.$emit('bv::hide::modal', 'info-modal')
-                    } else if (result.isDismissed) {
-                        //cancel
-                        this.$router.push({ name: 'home' })
-                    }
-                })
+
+                // Swal.fire({
+                //     title: 'অভিনন্দন',
+                //     text: `আপনার রেজিস্টেশন সফলভাবে দাখিল হয়েছে`,
+                //     icon: 'success',
+                //     confirmButtonColor: 'green',
+                //     confirmButtonText: `Ok`,
+
+                // }).then(async (result) => {
+                //     console.log(result)
+                //     if (result.isConfirmed) {
+                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
+                //         this.$router.push({ name: 'home' })
+                //     } else if (result.isDenied) {
+                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
+                //     } else if (result.isDismissed) {
+                //         //cancel
+                //         this.$router.push({ name: 'home' })
+                //     }
+                // })
+
+
+
+
         },
+
+        getdays(){
+
+            const monthName = this.burthdate.month;
+            const year = this.burthdate.year;
+
+            const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            const monthNumber = monthNames.indexOf(monthName);
+            const daysInMonth = new Date(year, monthNumber + 1, 0).getDate();
+
+            // console.log(daysInMonth);
+
+            for(var i =1;i<=daysInMonth;i++){
+                // console.log(i)
+                this.daysList.push(i);
+            }
+
+
+
+        },
+
+
+
     },
     mounted() {
         this.getdivisionFun();
+
+var years = function(startYear) {
+    var currentYear = new Date().getFullYear(), years = [];
+    startYear = startYear || 1980;
+    while ( startYear <= currentYear ) {
+        years.push(startYear++);
+    }
+    return years;
+}
+
+this.yearsList = years().sort((a, b) => b - a);
+
+
 
     }
 };
 </script>
 <style scoped >
+
 .app-heading {
     text-align: center;
     margin: 32px 0;
