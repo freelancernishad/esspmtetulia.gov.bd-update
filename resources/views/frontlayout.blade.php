@@ -19,7 +19,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 
-    <title>:: সৃষ্টি ::</title>
+    <title>সামাজিক সুরুক্ষা</title>
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/bangladesh-govt.png') }}" />
     <!-- <link href="https://kit-pro.fontawesome.com/releases/v5.15.2/css/pro.min.css" rel="stylesheet" onload="if(media!=='all')media='all'"> -->
     <!-- CSS only -->

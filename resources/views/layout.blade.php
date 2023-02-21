@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>:: সৃষ্টি ::</title>
+    <title>সামাজিক সুরুক্ষা</title>
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/bangladesh-govt.png') }}" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">

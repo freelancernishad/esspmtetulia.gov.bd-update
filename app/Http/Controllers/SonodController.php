@@ -1,20 +1,23 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Imports\SonodImport;
 use Exception;
 use App\Models\Sonod;
 use App\Models\Charage;
 use App\Models\Citizen;
 use App\Models\Payment;
+use App\Models\TikaLog;
 use App\Models\ActionLog;
 use App\Models\Uniouninfo;
 use App\Models\Expenditure;
-use App\Models\Notifications;
 use Illuminate\Http\Request;
+use App\Models\Notifications;
 use App\Models\Sonodnamelist;
-use App\Models\TikaLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +27,49 @@ use Symfony\Component\VarDumper\Caster\RedisCaster;
 
 class SonodController extends Controller
 {
+
+    public function import(Request $request)
+    {
+
+
+        // return $request->file('ecelfile');
+
+
+      return  $rows = Excel::toArray(new SonodImport, $request->file('ecelfile'));
+        foreach ($rows[0] as $row) {
+
+
+
+            student::create([
+                'school_id'=>$school_id,
+                'StudentID'=>$StudentID,
+                'AdmissionID'=>$AdmissionID,
+                'Year'=>date('Y'),
+                'StudentStatus'=>'Active',
+                'StudentRoll'=>$row[0],
+                'StudentClass'=>$row[1],
+                'StudentGroup'=>$row[2],
+                'StudentNameEn'=>$row[3],
+                'StudentName'=>$row[4],
+            ]);
+            print_r($AdmissionID.'<br/>');
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function prottonupdate(Request $request, $id)
     {
         $sonod = Sonod::find($id);
@@ -349,30 +395,124 @@ class SonodController extends Controller
         $wifeNid = $r->wifeNid;
 
         $nidNoCount = Sonod::where('nidNo',$nidNo)->count();
-        $father_husbandNidCount = Sonod::where('father_husbandNid',$father_husbandNid)->count();
-        $wifeNidCount = Sonod::where('wifeNid',$wifeNid)->count();
+
+
+
 
         if($nidNoCount>0){
-            return 'abedonkari seba grohon koreche';
+            $nidNoget = Sonod::where('nidNo',$nidNo)->first();
+            $result = [
+                'message'=>'abedonkari seba grohon koreche',
+                'data'=>$nidNoget,
+            ];
+            return $result;
         }
+
+
+        $father_husbandNidByCount = Sonod::where('nidNo',$father_husbandNid)->count();
+        if($father_husbandNidByCount>0){
+            $father_husbandNidByget = Sonod::where('nidNo',$father_husbandNid)->first();
+            $result = [
+                'message'=>'abedonkarir pita seba grohon koreche',
+                'data'=>$father_husbandNidByget,
+            ];
+            return $result;
+        }
+
+        $wifeNidNidByCount = Sonod::where('nidNo',$wifeNid)->count();
+        if($wifeNidNidByCount>0){
+            $wifeNidByget = Sonod::where('nidNo',$wifeNid)->first();
+            $result = [
+                'message'=>'abedonkarir stri seba grohon koreche',
+                'data'=>$wifeNidByget,
+            ];
+            return $result;
+        }
+
+
+        $nidNoByFather_husbandNidCount = Sonod::where('father_husbandNid',$nidNo)->count();
+        if($nidNoByFather_husbandNidCount>0){
+            $nidNoByFather_husbandNidGet = Sonod::where('father_husbandNid',$nidNo)->first();
+
+            if($nidNoByFather_husbandNidGet->father_husband=='পিতা'){
+                $result = [
+                    'message'=>'abedonkarir sontan seba grohon koreche',
+                    'data'=>$nidNoByFather_husbandNidGet,
+                ];
+                return $result;
+                }elseif($nidNoByFather_husbandNidGet->father_husband=='স্বামী'){
+                    $result = [
+                        'message'=>'abedonkarir stri seba grohon koreche',
+                        'data'=>$nidNoByFather_husbandNidGet,
+                    ];
+                    return $result;
+                }else{
+                    $result = [
+                        'message'=>'abedonkarir sontan/stri seba grohon koreche',
+                        'data'=>$nidNoByFather_husbandNidGet,
+                    ];
+                    return $result;
+                }
+        }
+
+
+
+
+
+
+
+
+
+        $father_husbandNidCount = Sonod::where('father_husbandNid',$father_husbandNid)->count();
 
         if($father_husbandNidCount>0){
 
             $father_husbandNidGet = Sonod::where('father_husbandNid',$father_husbandNid)->first();
             if($father_husbandNidGet->father_husband=='পিতা'){
-                return 'abedonkarir pta seba grohon koreche';
+
+            $result = [
+                'message'=>'abedonkarir ptar sontan seba grohon koreche',
+                'data'=>$father_husbandNidGet,
+            ];
+            return $result;
+
             }elseif($father_husbandNidGet->father_husband=='স্বামী'){
-                return 'abedonkarir sami seba grohon koreche';
+                $result = [
+                    'message'=>'abedonkarir samir stri seba grohon koreche',
+                    'data'=>$father_husbandNidGet,
+                ];
+                return $result;
             }else{
-                return 'abedonkarir pta/sami seba grohon koreche';
+                $result = [
+                    'message'=>'abedonkarir pta/sami seba grohon koreche',
+                    'data'=>$father_husbandNidGet,
+                ];
+                return $result;
             }
 
 
         }
 
-
+        $wifeNidCount = Sonod::where('wifeNid',$wifeNid)->count();
         if($wifeNidCount>0){
-            return 'abedonkarir stri seba grohon koreche';
+            $wifeNidGet = Sonod::where('wifeNid',$wifeNid)->first();
+            $result = [
+                'message'=>'abedonkarir sami seba grohon koreche',
+                'data'=>$wifeNidGet,
+            ];
+            return $result;
+
+        }
+
+        $nidNoByWifeNidCount = Sonod::where('wifeNid',$nidNo)->count();
+        if($nidNoByWifeNidCount>0){
+            $wifeNidGet = Sonod::where('wifeNid',$nidNo)->first();
+            $result = [
+                'message'=>'abedonkarir sami seba grohon koreche',
+                'data'=>$wifeNidGet,
+            ];
+            return $result;
+
         }
 
 
@@ -550,64 +690,21 @@ class SonodController extends Controller
         ];
         return $sonod->update($updatedata);
     }
+
+
+
     public function sonod_action(Request $request, $action, $id)
     {
         $sonod = Sonod::find($id);
-        $type = $request->type;
-        $unioun_name = $sonod->unioun_name;
-        $uniouninfos = Uniouninfo::where(['short_name_e' => $unioun_name])->first();
-        if ($action == 'approved') {
             $updatedata = [
-                'chaireman_name' => $uniouninfos->c_name,
-                'c_email' => $uniouninfos->c_email,
-                'chaireman_sign' => $uniouninfos->c_signture,
-                'stutus' => $action,
+                'status' => $action,
             ];
-            $sonod_name =  sonodEnName($sonod->sonod_name);
-            $payment_type = $uniouninfos->payment_type;
-            if ($payment_type == 'Prepaid') {
-                $sonodUrl =  url("/sonod/d/$id");
-                $InvoiceUrl =  url("/invoice/d/$id");
-                $deccription = "Congratulation! Your application $sonod->sonod_Id  has been Approved. Sonod : " . $sonodUrl . " Invoice : " . $InvoiceUrl;
-                // $deccription = "অভিনন্দন! আপনার আবেদনটি সফলভাবে অনুমোদিত হয়েছে। সনদ : $sonodUrl রশিদ : $InvoiceUrl";
-            } elseif ($payment_type == 'Postpaid') {
-                $paymentUrl =  url("/sonod/payment/$id");
-                $deccription = "Congratulation! Your application $sonod->sonod_Id  has been Approved. Pay: " . $paymentUrl;
-                // $deccription = "অভিনন্দন! আপনার আবেদনটি সফলভাবে অনুমোদিত হয়েছে। আবেদনের ফি প্রদানের জন্য ক্লিক করুন " . $paymentUrl;
-            }
-            smsSend($deccription, $sonod->applicant_mobile);
 
-
-
-
-
-
-
-        } else {
-            $updatedata = [
-                'stutus' => $action,
-            ];
-        }
-
-
-
-        $notifiData = ['union'=>$sonod->unioun_name,'roles'=>'Secretary'];
-        $notificationsCount = Notifications::where($notifiData)->count();
-        if($notificationsCount>0){
-           $notifications = Notifications::where($notifiData)->latest()->first();
-           $data =' {"to":"'.$notifications->key.'","notification":{"body":"চেয়ারম্যান '.$sonod->applicant_name.' এর '.$sonod->sonod_name.' এর আবেদনটি অনুমোদন করেছে","title":"সনদ নং '.int_en_to_bn($sonod->sonod_Id).'","icon":"'.asset('assets/img/bangladesh-govt.png').'","click_action":"'.url('/secretary/pay/'.$sonod->id).'"}}';
-           pushNotification($data);
-        }
-
-
-        // return $type;
-        if($type=='notify'){
-
-             $sonod->update($updatedata);
-             return redirect('/dashboard');
-            }
+            // return $updatedata;
             return $sonod->update($updatedata);
     }
+
+
 
     public function ChairnamNotificationApprove($id)
     {
@@ -931,25 +1028,43 @@ class SonodController extends Controller
             return $pdf->stream("$row->id_no.pdf");
 
     }
+
+
+
+
+
     public function sonod_search(Request $request)
     {
-        $sonodcount =  Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id, 'stutus' => 'approved'])->count();
-        if ($sonodcount > 0) {
-            $Sonodnamelist =  Sonodnamelist::where(['bnname' => $request->sonod_name])->first();
-            $sonod =  Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id, 'stutus' => 'approved'])->first();
-            $sonod['sonodUrl'] = "/sonod/$Sonodnamelist->enname/$sonod->id";
-            $sonod['searchstatus'] = "approved";
-            return  $sonod;
-        } else {
-            $sonodcountall =  Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id])->count();
-            if ($sonodcountall > 0) {
-                $sonod =   Sonod::where(['sonod_name' => $request->sonod_name, 'sonod_Id' => $request->sonod_Id])->first();
-                $sonod['searchstatus'] = "all";
-                return $sonod;
-            }
-        }
-        return 0;
+
+
+        $userdata = $request->userdata;
+        $status = $request->status;
+
+
+
+        $data['userdata']=$userdata;
+
+        return DB::table('sonods')
+
+        ->where('status',"$status")
+        ->where(function ($q)  use ($userdata) {
+            $q->orWhere('id_no', 'like', "%$userdata%")
+            ->orWhere('name', 'like', "%$userdata%")
+            ->orWhere('nidNo', 'like', "%$userdata%")
+            ->orWhere('mobileNo', 'like', "%$userdata%");
+        })
+
+
+
+
+        ->paginate(20);
+
+
     }
+
+
+
+
     public function singlesonod(Request $request, $id)
     {
         $admin = $request->admin;

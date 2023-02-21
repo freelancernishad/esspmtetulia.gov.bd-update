@@ -57,7 +57,11 @@ export const routes = [
   { path:  `${prefix}/application/list/:type`, component: sonod, name:'applicationlist',meta: { layout: adminlayout } },
 
   { path:  `${prefix}/sonod/action/Vaccination/:id`, component: Vaccination, name:'Vaccination',meta: { layout: adminlayout } },
+
+  { path:  `${prefix}/sonod/add/by/admin`, component: sonodedit, name:'sonodeadd',meta: { layout: adminlayout } },
+
   { path:  `${prefix}/sonod/action/edit/:id`, component: sonodedit, name:'sonodedit',meta: { layout: adminlayout } },
+
   { path:  `${prefix}/sonod/action/view/:id`, component: sonodview, name:'sonodview',meta: { layout: adminlayout } },
 
 

@@ -111,6 +111,7 @@ Route::get('sonod/{action}/{id}',[SonodController::class, 'sonod_action']);
 
 
 Route::get('sonod/sonod_Id',[SonodController::class, 'sonod_id']);
+
 Route::post('sonod/search',[SonodController::class, 'sonod_search']);
 
 

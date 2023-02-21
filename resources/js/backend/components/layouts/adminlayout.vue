@@ -117,11 +117,18 @@
 
                         <li class="nav-item" @click="submenu(0)" v-if="this.$localStorage.getItem('position') != 'Secretary'">
                                 <router-link :to="{ name: 'applicationlist', params:{type:'applied'} }" class="nav-link"><i
-                                    class="flaticon-dashboard"></i><span>প্রসব সম্ভবা</span></router-link>
+                                    class="flaticon-dashboard"></i><span>নতুন আবেদেন</span></router-link>
                         </li>
+
                         <li class="nav-item" @click="submenu(0)">
                                 <router-link :to="{ name: 'applicationlist', params:{type:'approved'} }" class="nav-link"><i
-                                    class="flaticon-dashboard"></i><span>প্রসব সম্পন্ন</span></router-link>
+                                    class="flaticon-dashboard"></i><span>সেবা গ্রহিতা</span></router-link>
+                        </li>
+
+
+                        <li class="nav-item" @click="submenu(0)">
+                                <router-link :to="{ name: 'applicationlist', params:{type:'cancel'} }" class="nav-link"><i
+                                    class="flaticon-dashboard"></i><span>বাতিলকৃত আবেদেন</span></router-link>
                         </li>
 
 

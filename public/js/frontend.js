@@ -2724,11 +2724,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
+                _this5.submitLoad = false;
                 _this5.form.dateOfBirth = _this5.burthdate.day + '-' + _this5.burthdate.month + '-' + _this5.burthdate.year;
 
                 _this5.$root.$emit('bv::show::modal', _this5.infoModal.id);
 
-              case 2:
+              case 3:
               case "end":
                 return _context5.stop();
             }
@@ -2739,79 +2740,125 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     finalSubmit: function finalSubmit() {
       var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var res, datas;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 _this6.submitLoad = true;
-                _context6.next = 3;
+                _context7.next = 3;
                 return _this6.callApi('post', '/api/sonod/submit', _this6.form);
 
               case 3:
-                res = _context6.sent;
+                res = _context7.sent;
                 datas = res.data;
                 console.log(datas);
 
-                if (datas == 'abedonkari seba grohon koreche') {
+                if (datas.message == 'abedonkari seba grohon koreche') {
                   Swal.fire({
                     title: 'দুঃখিত',
-                    text: "\u0986\u09AA\u09A8\u09BF \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7 \u098F\u0987 \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8",
+                    text: "".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7 ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: "close"
                   });
-                } else if (datas == 'abedonkarir pta seba grohon koreche') {
+                } else if (datas.message == 'abedonkarir pita seba grohon koreche') {
                   Swal.fire({
                     title: 'দুঃখিত',
-                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09AA\u09BF\u09A4\u09BE \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7 \u098F\u0987 \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8",
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09AA\u09BF\u09A4\u09BE ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: "close"
                   });
-                } else if (datas == 'abedonkarir sami seba grohon koreche') {
+                } else if (datas.message == 'abedonkarir stri seba grohon koreche') {
                   Swal.fire({
                     title: 'দুঃখিত',
-                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09AC\u09BE\u09AE\u09C0 \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7 \u098F\u0987 \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8",
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09A4\u09CD\u09B0\u09C0 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: "close"
                   });
-                } else if (datas == 'abedonkarir stri seba grohon koreche') {
+                } else if (datas.message == 'abedonkarir sontan seba grohon koreche') {
                   Swal.fire({
                     title: 'দুঃখিত',
-                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09A4\u09CD\u09B0\u09C0 \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7 \u098F\u0987 \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8",
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09A8\u09CD\u09A4\u09BE\u09A8 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: "close"
                   });
-                } // Swal.fire({
-                //     title: 'অভিনন্দন',
-                //     text: `আপনার রেজিস্টেশন সফলভাবে দাখিল হয়েছে`,
-                //     icon: 'success',
-                //     confirmButtonColor: 'green',
-                //     confirmButtonText: `Ok`,
-                // }).then(async (result) => {
-                //     console.log(result)
-                //     if (result.isConfirmed) {
-                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
-                //         this.$router.push({ name: 'home' })
-                //     } else if (result.isDenied) {
-                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
-                //     } else if (result.isDismissed) {
-                //         //cancel
-                //         this.$router.push({ name: 'home' })
-                //     }
-                // })
+                } else if (datas.message == 'abedonkarir ptar sontan seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09AD\u09BE\u0987 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir samir stri seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09AC\u09BE\u09AE\u09C0\u09B0 \u09A6\u09CD\u09AC\u09BF\u09A4\u09C0\u09DF \u09B8\u09CD\u09A4\u09CD\u09B0\u09C0 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir sami seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09AC\u09BE\u09AE\u09C0 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'অভিনন্দন',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B0\u09C7\u099C\u09BF\u09B8\u09CD\u099F\u09C7\u09B6\u09A8 \u09B8\u09AB\u09B2\u09AD\u09BE\u09AC\u09C7 \u09A6\u09BE\u0996\u09BF\u09B2 \u09B9\u09DF\u09C7\u099B\u09C7",
+                    icon: 'success',
+                    confirmButtonColor: 'green',
+                    confirmButtonText: "Ok"
+                  }).then( /*#__PURE__*/function () {
+                    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(result) {
+                      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+                        while (1) {
+                          switch (_context6.prev = _context6.next) {
+                            case 0:
+                              console.log(result);
 
+                              if (result.isConfirmed) {
+                                // this.$root.$emit('bv::hide::modal', 'info-modal')
+                                _this6.$router.push({
+                                  name: 'home'
+                                });
+                              } else if (result.isDenied) {// this.$root.$emit('bv::hide::modal', 'info-modal')
+                              } else if (result.isDismissed) {
+                                //cancel
+                                _this6.$router.push({
+                                  name: 'home'
+                                });
+                              }
+
+                            case 2:
+                            case "end":
+                              return _context6.stop();
+                          }
+                        }
+                      }, _callee6);
+                    }));
+
+                    return function (_x) {
+                      return _ref.apply(this, arguments);
+                    };
+                  }());
+                }
 
               case 7:
               case "end":
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6);
+        }, _callee7);
       }))();
     },
     getdays: function getdays() {
@@ -7226,45 +7273,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "row"
   }, [_vm._m(0), _vm._v(" "), _c("router-link", {
-    staticClass: "col-lg-4 mt-3 mb-3 text-center",
-    attrs: {
-      to: {
-        name: "childApplication"
-      }
-    }
-  }, [_c("div", {
-    staticClass: "serviceBox"
-  }, [_c("div", {
-    staticClass: "serviceLogo"
-  }, [_c("img", {
-    attrs: {
-      src: _vm.$asseturl + "assets/icon/birthing-services-icon.png",
-      width: "150px",
-      alt: ""
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "serviceTitle defaltTextColor"
-  }, [_vm._v("\n                                    গর্ভকালীন রেজিস্টেশন\n                                ")])])]), _vm._v(" "), _c("router-link", {
-    staticClass: "col-lg-4 mt-3 mb-3 text-center",
-    attrs: {
-      to: {
-        name: "vaxapplication"
-      }
-    }
-  }, [_c("div", {
-    staticClass: "serviceBox"
-  }, [_c("div", {
-    staticClass: "serviceLogo"
-  }, [_c("img", {
-    attrs: {
-      src: _vm.$asseturl + "assets/icon/4277177.png",
-      width: "130px",
-      alt: ""
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "serviceTitle defaltTextColor"
-  }, [_vm._v("\n                                    টিকা রেজিস্ট্রেশন\n                                ")])])]), _vm._v(" "), _c("router-link", {
-    staticClass: "col-lg-4 mt-3 mb-3 text-center",
+    staticClass: "col-lg-12 mt-3 mb-3 text-center",
     attrs: {
       to: {
         name: "childApplication"
@@ -7282,7 +7291,7 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "serviceTitle defaltTextColor"
-  }, [_vm._v("\n                                    টিকা কার্ড যাচাই\n                                ")])])])], 1), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c("side-bar", {
+  }, [_vm._v("\n                                    রেজিস্ট্রেশন\n                                ")])])])], 1), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c("side-bar", {
     attrs: {
       "class-name": "col-md-3"
     }
@@ -7314,7 +7323,7 @@ var staticRenderFns = [function () {
       _c = _vm._self._c;
 
   return _c("div", {
-    staticClass: "row"
+    staticClass: "row d-none"
   }, [_c("div", {
     staticClass: "col-md-12"
   }, [_c("h6", {

@@ -456,6 +456,7 @@ export default {
 
 
         async onSubmit() {
+            this.submitLoad = false;
 
             this.form.dateOfBirth = this.burthdate.day+'-'+this.burthdate.month+'-'+this.burthdate.year;
 
@@ -471,64 +472,93 @@ export default {
             console.log(datas)
 
 
-            if(datas=='abedonkari seba grohon koreche'){
+            if(datas.message=='abedonkari seba grohon koreche'){
                 Swal.fire({
                     title: 'দুঃখিত',
-                    text: `আপনি ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    text: `${datas.data.name} ইতিপূর্বে ${datas.data.vataName} সেবাটি গ্রহন করেছেন`,
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: `close`,
 
                 })
-            }else if(datas=='abedonkarir pta seba grohon koreche'){
+            }else if(datas.message=='abedonkarir pita seba grohon koreche'){
                 Swal.fire({
                     title: 'দুঃখিত',
-                    text: `আপনার পিতা ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    text: `আপনার পিতা ${datas.data.name} ইতিপূর্বে  ${datas.data.vataName} সেবাটি গ্রহন করেছেন`,
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: `close`,
 
                 })
-            }else if(datas=='abedonkarir sami seba grohon koreche'){
+            }else if(datas.message=='abedonkarir stri seba grohon koreche'){
                 Swal.fire({
                     title: 'দুঃখিত',
-                    text: `আপনার স্বামী ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    text: `আপনার স্ত্রী ${datas.data.name} ইতিপূর্বে  ${datas.data.vataName} সেবাটি গ্রহন করেছেন`,
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: `close`,
 
                 })
-            }else if(datas=='abedonkarir stri seba grohon koreche'){
+            }else if(datas.message=='abedonkarir sontan seba grohon koreche'){
                 Swal.fire({
                     title: 'দুঃখিত',
-                    text: `আপনার স্ত্রী ইতিপূর্বে এই সেবাটি গ্রহন করেছেন`,
+                    text: `আপনার সন্তান ${datas.data.name} ইতিপূর্বে  ${datas.data.vataName} সেবাটি গ্রহন করেছেন`,
                     icon: 'error',
                     confirmButtonColor: 'red',
                     confirmButtonText: `close`,
 
+                })
+            }else if(datas.message=='abedonkarir ptar sontan seba grohon koreche'){
+                Swal.fire({
+                    title: 'দুঃখিত',
+                    text: `আপনার ভাই ${datas.data.name} ইতিপূর্বে  ${datas.data.vataName} সেবাটি গ্রহন করেছেন`,
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: `close`,
+
+                })
+            }else if(datas.message=='abedonkarir samir stri seba grohon koreche'){
+                Swal.fire({
+                    title: 'দুঃখিত',
+                    text: `আপনার স্বামীর দ্বিতীয় স্ত্রী ${datas.data.name} ইতিপূর্বে  ${datas.data.vataName} সেবাটি গ্রহন করেছেন`,
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: `close`,
+
+                })
+            }else if(datas.message=='abedonkarir sami seba grohon koreche'){
+                Swal.fire({
+                    title: 'দুঃখিত',
+                    text: `আপনার স্বামী ${datas.data.name} ইতিপূর্বে  ${datas.data.vataName} সেবাটি গ্রহন করেছেন`,
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: `close`,
+
+                })
+            }else{
+                Swal.fire({
+                    title: 'অভিনন্দন',
+                    text: `আপনার রেজিস্টেশন সফলভাবে দাখিল হয়েছে`,
+                    icon: 'success',
+                    confirmButtonColor: 'green',
+                    confirmButtonText: `Ok`,
+
+                }).then(async (result) => {
+                    console.log(result)
+                    if (result.isConfirmed) {
+                        // this.$root.$emit('bv::hide::modal', 'info-modal')
+                        this.$router.push({ name: 'home' })
+                    } else if (result.isDenied) {
+                        // this.$root.$emit('bv::hide::modal', 'info-modal')
+                    } else if (result.isDismissed) {
+                        //cancel
+                        this.$router.push({ name: 'home' })
+                    }
                 })
             }
 
 
-                // Swal.fire({
-                //     title: 'অভিনন্দন',
-                //     text: `আপনার রেজিস্টেশন সফলভাবে দাখিল হয়েছে`,
-                //     icon: 'success',
-                //     confirmButtonColor: 'green',
-                //     confirmButtonText: `Ok`,
 
-                // }).then(async (result) => {
-                //     console.log(result)
-                //     if (result.isConfirmed) {
-                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
-                //         this.$router.push({ name: 'home' })
-                //     } else if (result.isDenied) {
-                //         // this.$root.$emit('bv::hide::modal', 'info-modal')
-                //     } else if (result.isDismissed) {
-                //         //cancel
-                //         this.$router.push({ name: 'home' })
-                //     }
-                // })
 
 
 

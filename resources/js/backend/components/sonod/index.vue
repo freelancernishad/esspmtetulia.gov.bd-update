@@ -12,16 +12,28 @@
             </ul>
         </div>
 
-
+        <div class="text-right">
+            <router-link :to="{name:'sonodeadd'}" class="btn btn-info">নতুন সেবা গ্রহিতা যোগ করুন</router-link>
+        </div>
 
         <div class="card">
             <div class="card-header">
-                <!-- <h3>আইডি নং দিয়ে খুঁজুন</h3>
+                <h3>খুঁজুন</h3>
+                <form  @submit.prevent="sonodSearch" class="d-flex">
+
+
+
+
                 <div class="form-group" style="width:250px">
-                    <input type="text" class="form-control" v-model="sonod_id" @input="searchSondId">
-                </div> -->
+                    <input type="text" class="form-control" placeholder=" রেজিস্ট্রেশন নাম্বার/নাম/জাতীয় পরিচয় পত্র নম্বর/মোবাইল নম্বর (যে কোন একটি তথ্য) এন্ট্রি করুন" v-model="form.userdata" >
+                </div>
 
+                <div class="form-group text-center">
+                    <button type="button" style="    font-size: 23px; margin-left: 10px;" disabled class="btn btn-info text-center" v-if="isSending">Wait...</button>
+                    <button type="submit" style="    font-size: 23px; margin-left: 10px;" class="btn btn-info text-center" v-else>খুঁজুন</button>
 
+                </div>
+            </form>
 
                 <nav aria-label="Page navigation example" v-if="TotalRows>20">
             <ul class="pagination  justify-content-end">
@@ -99,43 +111,20 @@
                             <!-- <td class="sonodTd">{{ dateformatGlobal(item.created_at)[6] }}</td> -->
                             <td class="sonodTd">
 
-                                <router-link size="sm" :to="{ name: editRoute, params: { id: item.id } }" v-if="editRoute != ''" class="btn btn-info mr-1 mt-1">প্রসব অনুমোদন করুন</router-link>
 
 
-                                <router-link size="sm" :to="{ name: Vaccination, params: { id: item.id } }"
-                                    v-if="Vaccination != ''" class="btn btn-success mr-1 mt-1">টিকা প্রদান করুন</router-link>
+                                    <span size="sm" @click="info(item, item.id, $event.target)"
+                                    v-if="applicationRoute2 != ''" class="btn btn-success mr-1 mt-1">বিস্তারিত</span>
 
 
-
-                                <a size="sm" target="_blank" :href="applicationRoute+'/d/' + item.id"
-                                    v-if="applicationRoute != ''" class="btn btn-success mr-1 mt-1">টিকা কার্ড</a>
-
-
-
-                                <span size="sm" @click="info(item, index, $event.target)" v-if="viewRoute != ''" class="btn btn-info mr-1 mt-1">আবেদনপত্র দেখুন</span>
-
-
-                                    <a size="sm" target="_blank"
-                                    :href="applicationRoute2+'/d/' + item.id"
-                                    v-if="applicationRoute2 != ''" class="btn btn-success mr-1 mt-1">বিস্তারিত</a>
-
-                                <span size="sm"
-                                    @click="approve(approveRoute, item.id, approveData, $event.target, approveType,item)"
-                                    v-if="approveRoute != '' && item.payment_status == 'Unpaid'"
-                                    class="btn btn-success mr-1 mt-1">অনুমোদন</span>
                                 <span size="sm"
                                     @click="approve('/api/sonod', item.id, approveData, $event.target, 'apiAction',item)"
-                                    v-else-if="approveRoute != '' && item.payment_status == 'Paid'"
+                                    v-if="approveRoute != ''"
                                     class="btn btn-success mr-1 mt-1">অনুমোদন</span>
-                                <span size="sm" @click="paynow(payRoute, item.id, $event.target)"
-                                    v-if="item.payment_status == 'Unpaid' && item.stutus == 'approved' && payRoute != ''"
-                                    class="btn btn-info mr-1 mt-1">ফি পরিশোধ করুন</span>
-                                <a :href="'/invoice/d/' + item.id" target="_blank" size="sm"
-                                    v-if="item.stutus == 'approved'" class="btn btn-info mr-1 mt-1">রশিদ প্রিন্ট</a>
-                                <a :href="'/sonod/d/' + item.id" target="_blank" size="sm"
-                                    v-if="item.stutus == 'approved' && item.payment_status == 'Paid'"
-                                    class="btn btn-info mr-1 mt-1">সনদ</a>
-                                <span size="sm" @click="cancel(cancelRoute, item.id, 'cancel', $event.target)"
+
+
+
+                                <span size="sm" @click="cancel('/api/sonod', item.id, 'cancel', $event.target)"
                                     v-if="cancelRoute != ''" class="btn btn-danger mr-1 mt-1">বাতিল করুন</span>
                             </td>
                             <!-- <td class="sonodTd" style="background: red;color: white;" v-if="item.payment_status=='Unpaid'">
@@ -190,25 +179,49 @@
 
             <div class="row">
 
+
+
+
+
+
 <div class="col-md-4"><b>আইডি নং :</b> {{ infoModal.content.id_no }}</div>
-<div class="col-md-4"><b>গর্ভবতী মহিলার নাম :</b> {{ infoModal.content.name }}</div>
-<div class="col-md-4"><b>স্বামীর নাম :</b> {{ infoModal.content.husband_name }}</div>
-<div class="col-md-4"><b>বিভাগ :</b> {{ infoModal.content.division }}</div>
+<div class="col-md-4"><b>সুবিধাভোগীর নাম :</b> {{ infoModal.content.name }}</div>
+<div class="col-md-4"><b>জাতীয় পরিচয়পত্র নম্বর :</b> {{ infoModal.content.nidNo }}</div>
+<div class="col-md-4"><b>মোবাইল নম্বর :</b> {{ infoModal.content.mobileNo }}</div>
+<div class="col-md-4"><b>পেশা :</b> {{ infoModal.content.occupation }}</div>
+<div class="col-md-4"><b>জন্ম তারিখ :</b> {{ infoModal.content.dateOfBirth }}</div>
+<div class="col-md-4"><b>পিতা/স্বামী :</b> {{ infoModal.content.father_husband }}</div>
+<div class="col-md-4"  v-if="infoModal.content.father_husband=='পিতা'"><b>পিতার নাম :</b> {{ infoModal.content.father_husbandName }}</div>
+<div class="col-md-4"  v-if="infoModal.content.father_husband=='স্বামী'"><b>স্বামী নাম :</b> {{ infoModal.content.father_husbandName }}</div>
+<div class="col-md-4"  v-if="infoModal.content.father_husband=='পিতা'"><b>পিতার জাতীয় পরিচয়পত্র নম্বর :</b> {{ infoModal.content.father_husbandNid }}</div>
+<div class="col-md-4"  v-if="infoModal.content.father_husband=='স্বামী'"><b>স্বামী জাতীয় পরিচয়পত্র নম্বর :</b> {{ infoModal.content.father_husbandNid }}</div>
+<div class="col-md-4" ><b>স্ত্রীর নাম :</b> {{ infoModal.content.wifeName }}</div>
+<div class="col-md-4" ><b>স্ত্রীর জাতীয় পরিচয়পত্র নম্বর  :</b> {{ infoModal.content.wifeNid }}</div>
+<div class="col-md-4" ><b>পরিবারের সদস্য সংখ্যা :</b> {{ infoModal.content.familyMenber }}</div>
+<div class="col-md-4"><b>বিভাগ :</b> {{ infoModal.content.district }}</div>
 <div class="col-md-4"><b>জেলা :</b> {{ infoModal.content.district }}</div>
 <div class="col-md-4"><b>উপজেলা/থানা :</b> {{ infoModal.content.upazila }}</div>
-<div class="col-md-4"><b>পোষ্ট অফিস :</b> {{ infoModal.content.post_office }}</div>
-<div class="col-md-4"><b>ওয়ার্ড নং :</b> {{ infoModal.content.word_number }}</div>
+<div class="col-md-4"><b>ইউনিয়ন :</b> {{ infoModal.content.unionName }}</div>
+<div class="col-md-4"><b>ওয়ার্ড নং :</b> {{ infoModal.content.wordNo }}</div>
 <div class="col-md-4"><b>গ্রাম/মহল্লা :</b> {{ infoModal.content.village }}</div>
-<div class="col-md-4"><b>শেষ মাসিকের তারিখ :</b> {{ infoModal.content.date_of_last_menstrual_period }}</div>
-<div class="col-md-4"><b>সম্ভাব্য প্রসবের তারিখ :</b> {{ infoModal.content.probable_date_of_delivery }}</div>
-<div class="col-md-4"><b>গ্রাভিড (কত তম গর্ভ) :</b> {{ infoModal.content.how_many_wombs }}</div>
-            </div>
+<div class="col-md-4"><b>হোল্ডিং নং :</b> {{ infoModal.content.holdingNo }}</div>
+
+
+
+
+</div>
 
             <template #modal-footer>
 <div></div>
       </template>
 
         </b-modal>
+
+
+
+
+
+
         <!-- Info modal -->
         <b-modal :id="actionModal.id" size="xl" :title="actionModal.title" >
             <div v-if="actionModal.title == 'Cancel'">
@@ -243,9 +256,7 @@ export default {
     computed: {
     },
     created() {
-        if (this.$route.params.type == 'cancel') {
-            this.fields.push({ key: 'cancedby', label: 'বাতিল করেছে', sortable: true },);
-        }
+
     },
     data() {
         return {
@@ -260,6 +271,7 @@ export default {
             viewRoute: '',
             cancelRoute: '',
             approveRoute: '',
+            approveData: '',
             approveType: '',
             payRoute: '',
             applicationRoute: '',
@@ -294,6 +306,12 @@ export default {
             PerPageData: '20',
             TotalRows: '1',
             Totalpage: {},
+
+            buttonLoader: false,
+            isSending: false,
+            form:{
+                userdata:'',
+            },
         }
     },
     watch: {
@@ -306,6 +324,27 @@ export default {
         }
     },
     methods: {
+
+
+
+        async sonodSearch(){
+            this.isSending = true
+            this.form['status'] = this.$route.params.type;
+            var res = await this.callApi('post',`/api/sonod/search`,this.form);
+            console.log(res)
+            this.items = res.data.data
+                this.TotalRows = `${res.data.total}`;
+                console.log(res.data.total)
+                this.Totalpage = res.data.links
+
+            // this.rows = res.data;
+            this.isSending = false
+        },
+
+
+
+
+
         searchSondId() {
             this.sonodList(true, this.sonod_id)
         },
@@ -332,64 +371,23 @@ export default {
 
             if(this.$route.params.type=='applied'){
 
-                if (localStorage.getItem('position') == 'Vaccination_workers') {
-                    this.editRoute='sonodedit';
-                    this.viewRoute = 'sonodview';
-                    this.approveRoute = '/api/sonod';
-                    this.approveType = 'apiAction';
-                    this.approveData = `approved`;
-                    this.applicationRoute = '';
-                    this.applicationRoute2 = '';
-                    this.Vaccination = '';
-                }else if (localStorage.getItem('position') == 'Family_planning_worker') {
-                    this.editRoute='sonodedit';
-                    this.viewRoute = 'sonodview';
-                    this.approveRoute = '/api/sonod';
-                    this.approveType = 'apiAction';
-                    this.approveData = `approved`;
-                    this.applicationRoute = '';
-                    this.applicationRoute2 = '';
-                    this.Vaccination = '';
-                } else if (localStorage.getItem('position') == 'Secretary') {
-                    this.editRoute='';
-                    this.viewRoute = '';
-                    this.approveRoute = '';
-                    this.approveType = '';
-                    this.approveData = '';
-                    this.applicationRoute = '';
-                    this.applicationRoute2 = '/information';
-                    this.Vaccination = '';
-                }
+                this.approveRoute = '111'
+                this.cancelRoute = '111'
+                this.applicationRoute2 = '111'
+                this.approveData = 'approved'
             }else if(this.$route.params.type=='approved'){
-                // console.log(localStorage.getItem('position'))
-                if (localStorage.getItem('position') == 'Vaccination_workers') {
-                    this.editRoute='';
-                    this.viewRoute = 'sonodview';
-                    this.approveRoute = '/api/sonod';
-                    this.approveType = 'apiAction';
-                    this.approveData = `approved`;
-                    this.applicationRoute = '/card';
-                    this.applicationRoute2 = '/information';
-                    this.Vaccination = 'Vaccination';
-                } else if (localStorage.getItem('position') == 'Family_planning_worker') {
-                    this.editRoute='';
-                    this.viewRoute = 'sonodview';
-                    this.approveRoute = '/api/sonod';
-                    this.approveType = 'apiAction';
-                    this.approveData = `approved`;
-                    this.applicationRoute = '';
-                    this.applicationRoute2 = '/information';
-                    this.Vaccination = '';
-                } else if (localStorage.getItem('position') == 'Secretary') {
-                    this.editRoute='';
-                    this.viewRoute = '';
-                    this.approveRoute = '';
-                    this.approveType = '';
-                    this.approveData = '';
-                    this.applicationRoute = '';
-                    this.applicationRoute2 = '/information';
-                    this.Vaccination = '';
-                }
+                this.approveRoute = ''
+                this.cancelRoute = ''
+                this.applicationRoute2 = 'applicationRoute2'
+                this.cancelRoute = 'applicationRoute2'
+                this.approveData = 'cancel'
+
+            }else if(this.$route.params.type=='cancel'){
+                this.approveRoute = '11'
+                this.cancelRoute = ''
+                this.applicationRoute2 = 'applicationRoute2'
+                this.approveData = 'approved'
+
             }
 
 
@@ -448,10 +446,27 @@ export default {
             }
         },
         async cancel(route, id, status, button) {
-            // console.log(id)
-            this.actionModal.content_id = `${id}`;
-            this.actionModal.title = `Cancel`;
-            this.$root.$emit('bv::show::modal', this.actionModal.id, button)
+
+            Swal.fire({
+                        title: 'আপনি কি নিশ্চিত?',
+                        text: `আবেদনটি বাতিল করতে চান!`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: `হা নিশ্চিত`,
+                        cancelButtonText: `বাতিল`
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            var res = await this.callApi('get', `${route}/${status}/${id}`, []);
+                            Notification.customSuccess(`আবেদনটি বাতিল হয়েছে!`);
+                            this.preLooding = false
+                            this.sonodList()
+                        } else {
+                            this.preLooding = false
+                        }
+                    })
+
         },
         async formcancel() {
             var id = this.actionModal.content_id;

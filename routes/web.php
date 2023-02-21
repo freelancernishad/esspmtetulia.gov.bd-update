@@ -25,6 +25,19 @@ use Illuminate\Support\Facades\Hash;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/import', function () {
+    return view('import');
+});
+Route::post('import', [SonodController::class, 'import']);
+
+
+
+
+
+
+
+
 Route::get('/smstest', function () {
 
     $details = [

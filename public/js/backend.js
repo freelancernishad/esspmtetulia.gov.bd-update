@@ -2971,32 +2971,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         content: '',
         content_id: ''
       },
-      charages: {
-        sonod_fee: 0,
-        vatAmount: 0,
-        taxAmount: 0,
-        service: 0,
-        totalamount: 0
-      },
-      waitForPayment: false,
       submitLoad: false,
-      sameStatus: '',
-      sonodnamedata: {},
-      SonodNamesOptions: {},
-      form: {},
+      burthdate: {
+        day: '',
+        month: '',
+        year: ''
+      },
+      yearsList: {},
+      monthsList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      daysList: [],
+      form: {
+        id_no: '',
+        vataName: '',
+        name: '',
+        nidNo: '',
+        mobileNo: '',
+        occupation: '',
+        dateOfBirth: '',
+        father_husband: 'পিতা',
+        father_husbandName: '',
+        father_husbandNid: '',
+        wifeName: '',
+        familyMenber: '',
+        division: '',
+        district: '',
+        upazila: '',
+        unionName: '',
+        wordNo: '',
+        village: '',
+        holdingNo: ''
+      },
       getdivisions: {},
       getdistricts: {},
       getthanas: {},
       getuniouns: {},
-      getdivisionsPer: {},
-      getdistrictsPer: {},
-      getthanasPer: {},
-      getuniounsPer: {},
-      Pdivision: 7,
-      Perdivision: 7,
+      Pdivision: '',
+      Perdivision: '',
       applicant_present_district: '',
+      thana: '',
       applicant_permanent_district: ''
     };
+  },
+  watch: {
+    '$route': {
+      handler: function handler(newValue, oldValue) {
+        this.form.year = new Date().getFullYear();
+        this.sonodname();
+      },
+      deep: true
+    }
   },
   methods: {
     getdivisionFun: function getdivisionFun() {
@@ -3027,19 +3050,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        var res;
+        var resdiv, res;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _this2.callApi('get', "/api/getdistrict?id=".concat(_this2.Pdivision), []);
+                return _this2.callApi('get', "/api/getdivisions?id=".concat(_this2.Pdivision), []);
 
               case 2:
+                resdiv = _context2.sent;
+                // console.log(resdiv)
+                _this2.form.division = resdiv.data.bn_name;
+                _context2.next = 6;
+                return _this2.callApi('get', "/api/getdistrict?id=".concat(_this2.Pdivision), []);
+
+              case 6:
                 res = _context2.sent;
                 _this2.getdistricts = res.data;
 
-              case 4:
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -3067,7 +3097,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 6:
                 resOwn = _context3.sent;
-                _this3.form.applicant_present_district = resOwn.data.bn_name;
+                _this3.form.district = resOwn.data.bn_name;
 
               case 8:
               case "end":
@@ -3081,19 +3111,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var res;
+        var ress, res;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return _this4.callApi('get', "/api/getunioun?id=".concat(_this4.thana), []);
+                return _this4.callApi('get', "/api/getthana?ownid=".concat(_this4.thana), []);
 
               case 2:
+                ress = _context4.sent;
+                // console.log(ress.data.bn_name);
+                _this4.form.upazila = ress.data.bn_name; // this.getuniouns = ress.data;
+
+                _context4.next = 6;
+                return _this4.callApi('get', "/api/getunioun?id=".concat(_this4.thana), []);
+
+              case 6:
                 res = _context4.sent;
                 _this4.getuniouns = res.data;
 
-              case 4:
+              case 8:
               case "end":
                 return _context4.stop();
             }
@@ -3101,30 +3139,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    address: function address() {
-      this.getdivisionFun();
-    },
     onSubmit: function onSubmit() {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        var res;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _context5.next = 2;
-                return _this5.callApi('post', '/api/sonod/update', _this5.form);
+                _this5.submitLoad = false;
+                _this5.form.dateOfBirth = _this5.burthdate.day + '-' + _this5.burthdate.month + '-' + _this5.burthdate.year;
 
-              case 2:
-                res = _context5.sent;
-                Notification.customSuccess("Your data has been Updated");
+                _this5.$root.$emit('bv::show::modal', _this5.infoModal.id);
 
-                _this5.$router.push({
-                  name: 'applicationlist'
-                });
-
-              case 5:
+              case 3:
               case "end":
                 return _context5.stop();
             }
@@ -3132,34 +3160,161 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee5);
       }))();
     },
-    getdata: function getdata(id) {
+    finalSubmit: function finalSubmit() {
       var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var res;
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        var res, datas;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                _context6.next = 2;
-                return _this6.callApi('get', "/api/sonod/single/".concat(id, "?admin=true"), []);
+                _this6.submitLoad = true;
+                _context7.next = 3;
+                return _this6.callApi('post', '/api/sonod/submit', _this6.form);
 
-              case 2:
-                res = _context6.sent;
-                _this6.form = res.data.sonod;
+              case 3:
+                res = _context7.sent;
+                datas = res.data;
+                console.log(datas);
 
-              case 4:
+                if (datas.message == 'abedonkari seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7 ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir pita seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09AA\u09BF\u09A4\u09BE ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir stri seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09A4\u09CD\u09B0\u09C0 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir sontan seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09A8\u09CD\u09A4\u09BE\u09A8 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir ptar sontan seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09AD\u09BE\u0987 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir samir stri seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09AC\u09BE\u09AE\u09C0\u09B0 \u09A6\u09CD\u09AC\u09BF\u09A4\u09C0\u09DF \u09B8\u09CD\u09A4\u09CD\u09B0\u09C0 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else if (datas.message == 'abedonkarir sami seba grohon koreche') {
+                  Swal.fire({
+                    title: 'দুঃখিত',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B8\u09CD\u09AC\u09BE\u09AE\u09C0 ".concat(datas.data.name, " \u0987\u09A4\u09BF\u09AA\u09C2\u09B0\u09CD\u09AC\u09C7  ").concat(datas.data.vataName, " \u09B8\u09C7\u09AC\u09BE\u099F\u09BF \u0997\u09CD\u09B0\u09B9\u09A8 \u0995\u09B0\u09C7\u099B\u09C7\u09A8"),
+                    icon: 'error',
+                    confirmButtonColor: 'red',
+                    confirmButtonText: "close"
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'অভিনন্দন',
+                    text: "\u0986\u09AA\u09A8\u09BE\u09B0 \u09B0\u09C7\u099C\u09BF\u09B8\u09CD\u099F\u09C7\u09B6\u09A8 \u09B8\u09AB\u09B2\u09AD\u09BE\u09AC\u09C7 \u09A6\u09BE\u0996\u09BF\u09B2 \u09B9\u09DF\u09C7\u099B\u09C7",
+                    icon: 'success',
+                    confirmButtonColor: 'green',
+                    confirmButtonText: "Ok"
+                  }).then( /*#__PURE__*/function () {
+                    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(result) {
+                      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+                        while (1) {
+                          switch (_context6.prev = _context6.next) {
+                            case 0:
+                              console.log(result);
+
+                              if (result.isConfirmed) {
+                                // this.$root.$emit('bv::hide::modal', 'info-modal')
+                                _this6.$router.push({
+                                  name: 'home'
+                                });
+                              } else if (result.isDenied) {// this.$root.$emit('bv::hide::modal', 'info-modal')
+                              } else if (result.isDismissed) {
+                                //cancel
+                                _this6.$router.push({
+                                  name: 'home'
+                                });
+                              }
+
+                            case 2:
+                            case "end":
+                              return _context6.stop();
+                          }
+                        }
+                      }, _callee6);
+                    }));
+
+                    return function (_x) {
+                      return _ref.apply(this, arguments);
+                    };
+                  }());
+                }
+
+              case 7:
               case "end":
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6);
+        }, _callee7);
       }))();
+    },
+    getdays: function getdays() {
+      var monthName = this.burthdate.month;
+      var year = this.burthdate.year;
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var monthNumber = monthNames.indexOf(monthName);
+      var daysInMonth = new Date(year, monthNumber + 1, 0).getDate(); // console.log(daysInMonth);
+
+      for (var i = 1; i <= daysInMonth; i++) {
+        // console.log(i)
+        this.daysList.push(i);
+      }
     }
   },
   mounted: function mounted() {
-    this.getdata(this.$route.params.id);
-    this.address();
+    this.getdivisionFun();
+
+    var years = function years(startYear) {
+      var currentYear = new Date().getFullYear(),
+          years = [];
+      startYear = startYear || 1980;
+
+      while (startYear <= currentYear) {
+        years.push(startYear++);
+      }
+
+      return years;
+    };
+
+    this.yearsList = years().sort(function (a, b) {
+      return b - a;
+    });
   }
 });
 
@@ -3184,19 +3339,15 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   computed: {},
-  created: function created() {
-    if (this.$route.params.type == 'cancel') {
-      this.fields.push({
-        key: 'cancedby',
-        label: 'বাতিল করেছে',
-        sortable: true
-      });
-    }
-  },
+  created: function created() {},
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       preLooding: true,
       nidverify: false,
       dobverify: false,
@@ -3208,6 +3359,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       viewRoute: '',
       cancelRoute: '',
       approveRoute: '',
+      approveData: '',
       approveType: '',
       payRoute: '',
       applicationRoute: '',
@@ -3242,7 +3394,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       PerPageData: '20',
       TotalRows: '1',
       Totalpage: {}
-    };
+    }, _defineProperty(_ref, "buttonLoader", false), _defineProperty(_ref, "isSending", false), _defineProperty(_ref, "form", {
+      userdata: ''
+    }), _ref;
   },
   watch: {
     '$route': {
@@ -3254,18 +3408,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    sonodSearch: function sonodSearch() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var res;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.isSending = true;
+                _this.form['status'] = _this.$route.params.type;
+                _context.next = 4;
+                return _this.callApi('post', "/api/sonod/search", _this.form);
+
+              case 4:
+                res = _context.sent;
+                console.log(res);
+                _this.items = res.data.data;
+                _this.TotalRows = "".concat(res.data.total);
+                console.log(res.data.total);
+                _this.Totalpage = res.data.links; // this.rows = res.data;
+
+                _this.isSending = false;
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
     searchSondId: function searchSondId() {
       this.sonodList(true, this.sonod_id);
     },
     paynow: function paynow(route, id, button) {
-      var _this = this;
+      var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
-                _this.preLooding = true;
+                _this2.preLooding = true;
                 Swal.fire({
                   title: 'আপনি কি নিশ্চিত?',
                   text: "\u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF\u09B0 \u09AB\u09BF \u09AA\u09B0\u09BF\u09B6\u09CB\u09A7 \u0995\u09B0\u09BE \u09B9\u09DF\u09C7\u099B\u09C7!",
@@ -3276,126 +3462,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   confirmButtonText: "\u09B9\u09BE \u09A8\u09BF\u09B6\u09CD\u099A\u09BF\u09A4!",
                   cancelButtonText: "\u09AC\u09BE\u09A4\u09BF\u09B2"
                 }).then( /*#__PURE__*/function () {
-                  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(result) {
+                  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(result) {
                     var res;
-                    return _regeneratorRuntime().wrap(function _callee$(_context) {
+                    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
                       while (1) {
-                        switch (_context.prev = _context.next) {
+                        switch (_context2.prev = _context2.next) {
                           case 0:
                             if (!result.isConfirmed) {
-                              _context.next = 6;
+                              _context2.next = 6;
                               break;
                             }
 
-                            _context.next = 3;
-                            return _this.callApi('get', "".concat(route, "/").concat(id), []);
+                            _context2.next = 3;
+                            return _this2.callApi('get', "".concat(route, "/").concat(id), []);
 
                           case 3:
-                            res = _context.sent;
+                            res = _context2.sent;
                             Notification.customSuccess("\u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF\u09B0 \u09AB\u09BF \u09AA\u09B0\u09BF\u09B6\u09CB\u09A7 \u0995\u09B0\u09BE \u09B9\u09DF\u09C7\u099B\u09C7");
 
-                            _this.sonodList();
+                            _this2.sonodList();
 
                           case 6:
                           case "end":
-                            return _context.stop();
+                            return _context2.stop();
                         }
                       }
-                    }, _callee);
+                    }, _callee2);
                   }));
 
                   return function (_x) {
-                    return _ref.apply(this, arguments);
+                    return _ref2.apply(this, arguments);
                   };
                 }());
 
               case 2:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
-    },
-    actionAccess: function actionAccess() {
-      if (this.$route.params.type == 'applied') {
-        if (localStorage.getItem('position') == 'Vaccination_workers') {
-          this.editRoute = 'sonodedit';
-          this.viewRoute = 'sonodview';
-          this.approveRoute = '/api/sonod';
-          this.approveType = 'apiAction';
-          this.approveData = "approved";
-          this.applicationRoute = '';
-          this.applicationRoute2 = '';
-          this.Vaccination = '';
-        } else if (localStorage.getItem('position') == 'Family_planning_worker') {
-          this.editRoute = 'sonodedit';
-          this.viewRoute = 'sonodview';
-          this.approveRoute = '/api/sonod';
-          this.approveType = 'apiAction';
-          this.approveData = "approved";
-          this.applicationRoute = '';
-          this.applicationRoute2 = '';
-          this.Vaccination = '';
-        } else if (localStorage.getItem('position') == 'Secretary') {
-          this.editRoute = '';
-          this.viewRoute = '';
-          this.approveRoute = '';
-          this.approveType = '';
-          this.approveData = '';
-          this.applicationRoute = '';
-          this.applicationRoute2 = '/information';
-          this.Vaccination = '';
-        }
-      } else if (this.$route.params.type == 'approved') {
-        // console.log(localStorage.getItem('position'))
-        if (localStorage.getItem('position') == 'Vaccination_workers') {
-          this.editRoute = '';
-          this.viewRoute = 'sonodview';
-          this.approveRoute = '/api/sonod';
-          this.approveType = 'apiAction';
-          this.approveData = "approved";
-          this.applicationRoute = '/card';
-          this.applicationRoute2 = '/information';
-          this.Vaccination = 'Vaccination';
-        } else if (localStorage.getItem('position') == 'Family_planning_worker') {
-          this.editRoute = '';
-          this.viewRoute = 'sonodview';
-          this.approveRoute = '/api/sonod';
-          this.approveType = 'apiAction';
-          this.approveData = "approved";
-          this.applicationRoute = '';
-          this.applicationRoute2 = '/information';
-          this.Vaccination = '';
-        } else if (localStorage.getItem('position') == 'Secretary') {
-          this.editRoute = '';
-          this.viewRoute = '';
-          this.approveRoute = '';
-          this.approveType = '';
-          this.approveData = '';
-          this.applicationRoute = '';
-          this.applicationRoute2 = '/information';
-          this.Vaccination = '';
-        }
-      }
-    },
-    info: function info(item, index, button) {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                console.log(item);
-                _this2.buttonLoader = true;
-                _this2.infoModal.title = "".concat(item.name);
-                _this2.infoModal.content = item;
-                _this2.buttonLoader = false;
-
-                _this2.$root.$emit('bv::show::modal', _this2.infoModal.id, button);
-
-              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -3403,32 +3503,75 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    approve: function approve(route, id, status, button, ApproveType, item) {
+    actionAccess: function actionAccess() {
+      if (this.$route.params.type == 'applied') {
+        this.approveRoute = '111';
+        this.cancelRoute = '111';
+        this.applicationRoute2 = '111';
+        this.approveData = 'approved';
+      } else if (this.$route.params.type == 'approved') {
+        this.approveRoute = '';
+        this.cancelRoute = '';
+        this.applicationRoute2 = 'applicationRoute2';
+        this.cancelRoute = 'applicationRoute2';
+        this.approveData = 'cancel';
+      } else if (this.$route.params.type == 'cancel') {
+        this.approveRoute = '11';
+        this.cancelRoute = '';
+        this.applicationRoute2 = 'applicationRoute2';
+        this.approveData = 'approved';
+      }
+    },
+    info: function info(item, index, button) {
       var _this3 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                console.log(item);
+                _this3.buttonLoader = true;
+                _this3.infoModal.title = "".concat(item.name);
+                _this3.infoModal.content = item;
+                _this3.buttonLoader = false;
+
+                _this3.$root.$emit('bv::show::modal', _this3.infoModal.id, button);
+
+              case 6:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    approve: function approve(route, id, status, button, ApproveType, item) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 // console.log(item.sonod_name)
                 if (ApproveType == 'vueAction') {
-                  _this3.actionModal.content_id = "".concat(id);
-                  _this3.actionModal.status = "".concat(status);
-                  _this3.actionModal.content = item;
-                  _this3.actionModal.title = "".concat(status);
+                  _this4.actionModal.content_id = "".concat(id);
+                  _this4.actionModal.status = "".concat(status);
+                  _this4.actionModal.content = item;
+                  _this4.actionModal.title = "".concat(status);
 
-                  _this3.$root.$emit('bv::show::modal', _this3.actionModal.id, button);
+                  _this4.$root.$emit('bv::show::modal', _this4.actionModal.id, button);
                 } else if (ApproveType == 'apiAction') {
-                  if (_this3.Users.position == 'Secretary') {
-                    _this3.actionModal.content_id = "".concat(id);
-                    _this3.actionModal.status = "".concat(status);
-                    _this3.actionModal.title = "".concat(status);
-                    _this3.actionModal.content = item;
+                  if (_this4.Users.position == 'Secretary') {
+                    _this4.actionModal.content_id = "".concat(id);
+                    _this4.actionModal.status = "".concat(status);
+                    _this4.actionModal.title = "".concat(status);
+                    _this4.actionModal.content = item;
 
-                    _this3.$root.$emit('bv::show::modal', _this3.actionModal.id, button);
+                    _this4.$root.$emit('bv::show::modal', _this4.actionModal.id, button);
                   } else {
-                    _this3.preLooding = true;
+                    _this4.preLooding = true;
                     Swal.fire({
                       title: 'আপনি কি নিশ্চিত?',
                       text: "\u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF \u0985\u09A8\u09C1\u09AE\u09CB\u09A6\u09A8 \u0995\u09B0\u09A4\u09C7 \u099A\u09BE\u09A8!",
@@ -3439,43 +3582,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       confirmButtonText: "\u09B9\u09BE \u09A8\u09BF\u09B6\u09CD\u099A\u09BF\u09A4",
                       cancelButtonText: "\u09AC\u09BE\u09A4\u09BF\u09B2"
                     }).then( /*#__PURE__*/function () {
-                      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(result) {
+                      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(result) {
                         var res;
-                        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+                        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
                           while (1) {
-                            switch (_context4.prev = _context4.next) {
+                            switch (_context5.prev = _context5.next) {
                               case 0:
                                 if (!result.isConfirmed) {
-                                  _context4.next = 9;
+                                  _context5.next = 9;
                                   break;
                                 }
 
-                                _context4.next = 3;
-                                return _this3.callApi('get', "".concat(route, "/").concat(status, "/").concat(id), []);
+                                _context5.next = 3;
+                                return _this4.callApi('get', "".concat(route, "/").concat(status, "/").concat(id), []);
 
                               case 3:
-                                res = _context4.sent;
+                                res = _context5.sent;
                                 Notification.customSuccess("\u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF \u0985\u09A8\u09C1\u09AE\u09A6\u09BF\u09A4 \u09B9\u09DF\u09C7\u099B\u09C7!");
-                                _this3.preLooding = false;
+                                _this4.preLooding = false;
 
-                                _this3.sonodList();
+                                _this4.sonodList();
 
-                                _context4.next = 10;
+                                _context5.next = 10;
                                 break;
 
                               case 9:
-                                _this3.preLooding = false;
+                                _this4.preLooding = false;
 
                               case 10:
                               case "end":
-                                return _context4.stop();
+                                return _context5.stop();
                             }
                           }
-                        }, _callee4);
+                        }, _callee5);
                       }));
 
                       return function (_x2) {
-                        return _ref2.apply(this, arguments);
+                        return _ref3.apply(this, arguments);
                       };
                     }());
                   }
@@ -3483,100 +3626,71 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 1:
               case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5);
-      }))();
-    },
-    cancel: function cancel(route, id, status, button) {
-      var _this4 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                // console.log(id)
-                _this4.actionModal.content_id = "".concat(id);
-                _this4.actionModal.title = "Cancel";
-
-                _this4.$root.$emit('bv::show::modal', _this4.actionModal.id, button);
-
-              case 3:
-              case "end":
                 return _context6.stop();
             }
           }
         }, _callee6);
       }))();
     },
-    formcancel: function formcancel() {
+    cancel: function cancel(route, id, status, button) {
       var _this5 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-        var id, res;
-        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                id = _this5.actionModal.content_id;
-                _this5.b['names'] = _this5.Users.names;
-                _this5.b['user_id'] = _this5.Users.id;
-                _this5.b['position'] = _this5.Users.position;
-                _this5.b['unioun'] = localStorage.getItem('unioun');
-                _this5.b['status'] = 'cancel';
-                _this5.b['sonod_id'] = id;
-                _context7.next = 9;
-                return _this5.callApi('post', "".concat(_this5.cancelRoute, "/cancel/").concat(id), _this5.b);
-
-              case 9:
-                res = _context7.sent;
-
-                // console.log(res)
-                _this5.$root.$emit('bv::hide::modal', _this5.actionModal.id);
-
-                _this5.sonodList();
-
-                _this5.actionModal.content_id = '';
-                _this5.actionModal.title = '';
-                _this5.actionModal.content = {};
-                _this5.b = {
-                  reson: ''
-                };
-                Notification.customSuccess("Your data has been Canceled");
-
-              case 17:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7);
-      }))();
-    },
-    uniondata: function uniondata() {
-      var _this6 = this;
-
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-        var res;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) {
             switch (_context8.prev = _context8.next) {
               case 0:
-                if (!_this6.$route.params.name) {
-                  _context8.next = 5;
-                  break;
-                }
+                Swal.fire({
+                  title: 'আপনি কি নিশ্চিত?',
+                  text: "\u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF \u09AC\u09BE\u09A4\u09BF\u09B2 \u0995\u09B0\u09A4\u09C7 \u099A\u09BE\u09A8!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: "\u09B9\u09BE \u09A8\u09BF\u09B6\u09CD\u099A\u09BF\u09A4",
+                  cancelButtonText: "\u09AC\u09BE\u09A4\u09BF\u09B2"
+                }).then( /*#__PURE__*/function () {
+                  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(result) {
+                    var res;
+                    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+                      while (1) {
+                        switch (_context7.prev = _context7.next) {
+                          case 0:
+                            if (!result.isConfirmed) {
+                              _context7.next = 9;
+                              break;
+                            }
 
-                _context8.next = 3;
-                return _this6.callApi('get', "/api/get/sonodname/list?data=".concat(_this6.$route.params.name.replaceAll('_', ' ')), []);
+                            _context7.next = 3;
+                            return _this5.callApi('get', "".concat(route, "/").concat(status, "/").concat(id), []);
 
-              case 3:
-                res = _context8.sent;
+                          case 3:
+                            res = _context7.sent;
+                            Notification.customSuccess("\u0986\u09AC\u09C7\u09A6\u09A8\u099F\u09BF \u09AC\u09BE\u09A4\u09BF\u09B2 \u09B9\u09DF\u09C7\u099B\u09C7!");
+                            _this5.preLooding = false;
 
-                _this6.$store.commit('setUpdateSonodName', res.data);
+                            _this5.sonodList();
 
-              case 5:
+                            _context7.next = 10;
+                            break;
+
+                          case 9:
+                            _this5.preLooding = false;
+
+                          case 10:
+                          case "end":
+                            return _context7.stop();
+                        }
+                      }
+                    }, _callee7);
+                  }));
+
+                  return function (_x3) {
+                    return _ref4.apply(this, arguments);
+                  };
+                }());
+
+              case 1:
               case "end":
                 return _context8.stop();
             }
@@ -3584,92 +3698,165 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee8);
       }))();
     },
-    sonodList: function sonodList() {
-      var _arguments = arguments,
-          _this7 = this;
+    formcancel: function formcancel() {
+      var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
-        var auto, sondId, page, stutus, payment_status, unioun, res;
+        var id, res;
         return _regeneratorRuntime().wrap(function _callee9$(_context9) {
           while (1) {
             switch (_context9.prev = _context9.next) {
               case 0:
+                id = _this6.actionModal.content_id;
+                _this6.b['names'] = _this6.Users.names;
+                _this6.b['user_id'] = _this6.Users.id;
+                _this6.b['position'] = _this6.Users.position;
+                _this6.b['unioun'] = localStorage.getItem('unioun');
+                _this6.b['status'] = 'cancel';
+                _this6.b['sonod_id'] = id;
+                _context9.next = 9;
+                return _this6.callApi('post', "".concat(_this6.cancelRoute, "/cancel/").concat(id), _this6.b);
+
+              case 9:
+                res = _context9.sent;
+
+                // console.log(res)
+                _this6.$root.$emit('bv::hide::modal', _this6.actionModal.id);
+
+                _this6.sonodList();
+
+                _this6.actionModal.content_id = '';
+                _this6.actionModal.title = '';
+                _this6.actionModal.content = {};
+                _this6.b = {
+                  reson: ''
+                };
+                Notification.customSuccess("Your data has been Canceled");
+
+              case 17:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9);
+      }))();
+    },
+    uniondata: function uniondata() {
+      var _this7 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
+        var res;
+        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+          while (1) {
+            switch (_context10.prev = _context10.next) {
+              case 0:
+                if (!_this7.$route.params.name) {
+                  _context10.next = 5;
+                  break;
+                }
+
+                _context10.next = 3;
+                return _this7.callApi('get', "/api/get/sonodname/list?data=".concat(_this7.$route.params.name.replaceAll('_', ' ')), []);
+
+              case 3:
+                res = _context10.sent;
+
+                _this7.$store.commit('setUpdateSonodName', res.data);
+
+              case 5:
+              case "end":
+                return _context10.stop();
+            }
+          }
+        }, _callee10);
+      }))();
+    },
+    sonodList: function sonodList() {
+      var _arguments = arguments,
+          _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+        var auto, sondId, page, stutus, payment_status, unioun, res;
+        return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+          while (1) {
+            switch (_context11.prev = _context11.next) {
+              case 0:
                 auto = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : false;
                 sondId = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : '';
-                if (!auto) _this7.preLooding = true;
+                if (!auto) _this8.preLooding = true;
                 page = 1;
-                if (_this7.$route.query.page) page = _this7.$route.query.page;
+                if (_this8.$route.query.page) page = _this8.$route.query.page;
                 stutus = '';
                 payment_status = '';
 
-                if (_this7.$route.params.type == 'new') {
+                if (_this8.$route.params.type == 'new') {
                   stutus = 'Pending';
 
-                  if (_this7.$localStorage.getItem('position') == 'super-admin') {
+                  if (_this8.$localStorage.getItem('position') == 'super-admin') {
                     stutus = 'Pending';
-                  } else if (_this7.$localStorage.getItem('position') == 'Chairman') {
+                  } else if (_this8.$localStorage.getItem('position') == 'Chairman') {
                     stutus = 'Secretary_approved';
                   } else {
                     stutus = 'Pending';
                   }
-                } else if (_this7.$route.params.type == 'approved') {
+                } else if (_this8.$route.params.type == 'approved') {
                   stutus = 'approved';
 
-                  if (_this7.$localStorage.getItem('position') == 'Chairman') {
+                  if (_this8.$localStorage.getItem('position') == 'Chairman') {
                     stutus = 'approved';
                     payment_status = 'Paid';
                   } else {
                     stutus = 'approved';
                   }
                 } else {
-                  stutus = _this7.$route.params.type;
+                  stutus = _this8.$route.params.type;
                 }
 
                 unioun = "";
-                if (_this7.$localStorage.getItem('position') == 'Chairman' || _this7.$localStorage.getItem('position') == 'Secretary') unioun = "&unioun_name=".concat(localStorage.getItem('unioun'));
+                if (_this8.$localStorage.getItem('position') == 'Chairman' || _this8.$localStorage.getItem('position') == 'Secretary') unioun = "&unioun_name=".concat(localStorage.getItem('unioun'));
 
-                if (_this7.$localStorage.getItem('position') == 'Thana_admin') {
+                if (_this8.$localStorage.getItem('position') == 'Thana_admin') {
                   unioun = "";
                 }
 
                 if (!sondId) {
-                  _context9.next = 17;
+                  _context11.next = 17;
                   break;
                 }
 
-                _context9.next = 14;
-                return _this7.callApi('get', "/api/sonod/list?id_no=".concat(sondId), []);
+                _context11.next = 14;
+                return _this8.callApi('get', "/api/sonod/list?id_no=".concat(sondId), []);
 
               case 14:
-                res = _context9.sent;
-                _context9.next = 20;
+                res = _context11.sent;
+                _context11.next = 20;
                 break;
 
               case 17:
-                _context9.next = 19;
-                return _this7.callApi('get', "/api/sonod/list?page=".concat(page, "&stutus=").concat(_this7.$route.params.type), []);
+                _context11.next = 19;
+                return _this8.callApi('get', "/api/sonod/list?page=".concat(page, "&stutus=").concat(_this8.$route.params.type), []);
 
               case 19:
-                res = _context9.sent;
+                res = _context11.sent;
 
               case 20:
                 // console.log('sdf')
                 // var res = await this.callApi('get', `/api/sonod/list?page=${page}&sonod_name=${this.$route.params.name}${unioun}&filter[stutus]=${stutus}&filter[payment_status]=${payment_status}`, []);
-                _this7.items = res.data.data;
-                _this7.TotalRows = "".concat(res.data.total);
+                _this8.items = res.data.data;
+                _this8.TotalRows = "".concat(res.data.total);
                 console.log(res.data.total);
-                _this7.Totalpage = res.data.links;
+                _this8.Totalpage = res.data.links;
                 if (!auto) window.scrollTo(0, 0);
-                if (!auto) _this7.preLooding = false;
+                if (!auto) _this8.preLooding = false;
 
-                _this7.actionAccess();
+                _this8.actionAccess();
 
               case 27:
               case "end":
-                return _context9.stop();
+                return _context11.stop();
             }
           }
-        }, _callee9);
+        }, _callee11);
       }))();
     },
     age: function age() {
@@ -3701,12 +3888,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    var _this8 = this;
+    var _this9 = this;
 
     this.uniondata();
     this.sonodList();
     setInterval(function () {
-      _this8.sonodList(true, _this8.sonod_id);
+      _this9.sonodList(true, _this9.sonod_id);
     }, 300000);
   }
 });
@@ -4901,7 +5088,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "flaticon-dashboard"
-  }), _c("span", [_vm._v("প্রসব সম্ভবা")])])], 1) : _vm._e(), _vm._v(" "), _c("li", {
+  }), _c("span", [_vm._v("নতুন আবেদেন")])])], 1) : _vm._e(), _vm._v(" "), _c("li", {
     staticClass: "nav-item",
     on: {
       click: function click($event) {
@@ -4920,7 +5107,26 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "flaticon-dashboard"
-  }), _c("span", [_vm._v("প্রসব সম্পন্ন")])])], 1)])])]), _vm._v(" "), _c("div", {
+  }), _c("span", [_vm._v("সেবা গ্রহিতা")])])], 1), _vm._v(" "), _c("li", {
+    staticClass: "nav-item",
+    on: {
+      click: function click($event) {
+        return _vm.submenu(0);
+      }
+    }
+  }, [_c("router-link", {
+    staticClass: "nav-link",
+    attrs: {
+      to: {
+        name: "applicationlist",
+        params: {
+          type: "cancel"
+        }
+      }
+    }
+  }, [_c("i", {
+    staticClass: "flaticon-dashboard"
+  }), _c("span", [_vm._v("বাতিলকৃত আবেদেন")])])], 1)])])]), _vm._v(" "), _c("div", {
     staticClass: "dashboard-content-one"
   }, [_vm._t("default")], 2)])], 1);
 };
@@ -5714,7 +5920,7 @@ var render = function render() {
       "text-align": "center",
       color: "white"
     }
-  }, [_vm._v("প্রসব অনুমোদন করুন\n        ")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("রেজিস্টেশন ")]), _vm._v(" "), _c("div", {
     staticClass: "form-pannel"
   }, [_c("div", {
     staticClass: "row"
@@ -5722,176 +5928,12 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
-  }, [_vm._m(0), _vm._v(_vm._s(_vm.form.id_no) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_vm._m(1), _vm._v(_vm._s(_vm.form.name) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_vm._m(2), _vm._v(_vm._s(_vm.form.pregnant_woman_nid) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_vm._m(3), _vm._v(_vm._s(_vm.form.husband_name) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_vm._m(4), _vm._v(_vm._s(_vm.form.husband_name_nid) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("মোবাইল নম্বর : ")]), _vm._v(_vm._s(_vm.form.mobile_no) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("বিভাগ : ")]), _vm._v(_vm._s(_vm.form.division) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("জেলা : ")]), _vm._v(_vm._s(_vm.form.district) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("উপজেলা/থানা : ")]), _vm._v(_vm._s(_vm.form.upazila) + "\n\n\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("ইউনিয়ন : ")]), _vm._v(_vm._s(_vm.form.union) + "\n\n\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("পোষ্ট অফিস : ")]), _vm._v(_vm._s(_vm.form.post_office) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("ওয়ার্ড নং : ")]), _vm._v(_vm._s(_vm.form.word_number) + "\n\n\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("গ্রাম/মহল্লা : ")]), _vm._v(" " + _vm._s(_vm.form.village) + "\n\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("শেষ মাসিকের তারিখ : ")]), _vm._v(" " + _vm._s(_vm.form.date_of_last_menstrual_period) + "\n\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("সম্ভাব্য প্রসবের তারিখ : ")]), _vm._v(_vm._s(_vm.form.probable_date_of_delivery) + "\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("গ্রাভিড (কত তম গর্ভ) : ")]), _vm._v(_vm._s(_vm.form.how_many_wombs) + "\n\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("span", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("কততম সন্তান  : ")]), _vm._v(_vm._s(_vm.form.how_many_children) + "\n\n                    ")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("সন্তান প্রসবের তারিখ")]), _vm._v(" "), _c("input", {
+  }, [_vm._m(0), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.form.date_of_birth,
-      expression: "form.date_of_birth"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "date",
-      required: ""
-    },
-    domProps: {
-      value: _vm.form.date_of_birth
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-
-        _vm.$set(_vm.form, "date_of_birth", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "labelColor",
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("সন্তান প্রসব")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.form.childbirth_type,
-      expression: "form.childbirth_type"
+      value: _vm.form.vataName,
+      expression: "form.vataName"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5906,14 +5948,118 @@ var render = function render() {
           return val;
         });
 
-        _vm.$set(_vm.form, "childbirth_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.form, "vataName", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
     attrs: {
       value: ""
     }
-  }, [_vm._v("নির্বাচন করুন")]), _vm._v(" "), _c("option", [_vm._v("জীবত প্রসব")]), _vm._v(" "), _c("option", [_vm._v("মৃত প্রসব")]), _vm._v(" "), _c("option", [_vm._v("গর্ভপাত প্রসব")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("সহায়তার ধরন নির্বাচন করুন")]), _vm._v(" "), _c("option", [_vm._v("মুক্তিযোদ্ধা ভাতা")]), _vm._v(" "), _c("option", [_vm._v("বয়স্ক ভাতা")]), _vm._v(" "), _c("option", [_vm._v("বিধবা ভাতা")]), _vm._v(" "), _c("option", [_vm._v("প্রসূতি ভাতা")]), _vm._v(" "), _c("option", [_vm._v("প্রতিবন্ধী ভাতা")]), _vm._v(" "), _c("option", [_vm._v("ভিডিজি/ভিজিএফ")]), _vm._v(" "), _c("option", [_vm._v("অন্যান্য")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(1), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.name,
+      expression: "form.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(2), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.nidNo,
+      expression: "form.nidNo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.nidNo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "nidNo", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(3), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.mobileNo,
+      expression: "form.mobileNo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.mobileNo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "mobileNo", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm._m(4), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.occupation,
+      expression: "form.occupation"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.occupation
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "occupation", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
@@ -5922,12 +6068,14 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("লিঙ্গ")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("জন্ম তারিখ")]), _vm._v(" "), _c("div", {
+    staticClass: "d-flex"
+  }, [_c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.form.gender,
-      expression: "form.gender"
+      value: _vm.burthdate.year,
+      expression: "burthdate.year"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5942,14 +6090,74 @@ var render = function render() {
           return val;
         });
 
-        _vm.$set(_vm.form, "gender", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.burthdate, "year", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
     attrs: {
       value: ""
     }
-  }, [_vm._v("নির্বাচন করুন")]), _vm._v(" "), _c("option", [_vm._v("পুরুষ")]), _vm._v(" "), _c("option", [_vm._v("মহিলা")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("সাল নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.yearsList, function (year) {
+    return _c("option", [_vm._v(_vm._s(year))]);
+  })], 2), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.burthdate.month,
+      expression: "burthdate.month"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      required: ""
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.burthdate, "month", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, _vm.getdays]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("মাস নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.monthsList, function (month) {
+    return _c("option", [_vm._v(_vm._s(month))]);
+  })], 2), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.burthdate.day,
+      expression: "burthdate.day"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.burthdate, "day", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("তারিখ নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.daysList, function (day) {
+    return _c("option", [_vm._v(_vm._s(day))]);
+  })], 2)])])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("div", {
     staticClass: "form-group"
@@ -5958,12 +6166,54 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("সন্তানের নাম")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("পিতা/স্বামী")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.form.childs_name,
-      expression: "form.childs_name"
+      value: _vm.form.father_husband,
+      expression: "form.father_husband"
+    }],
+    staticClass: "form-control",
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.form, "father_husband", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "পিতা"
+    }
+  }, [_vm._v("পিতা")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "স্বামী"
+    }
+  }, [_vm._v("স্বামী")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm.form.father_husband == "পিতা" ? _c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("পিতার নাম")]) : _vm.form.father_husband == "স্বামী" ? _c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("স্বামীর নাম")]) : _vm._e(), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.father_husbandName,
+      expression: "form.father_husbandName"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5971,13 +6221,49 @@ var render = function render() {
       required: ""
     },
     domProps: {
-      value: _vm.form.childs_name
+      value: _vm.form.father_husbandName
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
 
-        _vm.$set(_vm.form, "childs_name", $event.target.value);
+        _vm.$set(_vm.form, "father_husbandName", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_vm.form.father_husband == "পিতা" ? _c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("পিতার জাতীয় পরিচয়পত্র নম্বর")]) : _vm.form.father_husband == "স্বামী" ? _c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("স্বামীর জাতীয় পরিচয়পত্র নম্বর")]) : _vm._e(), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.father_husbandNid,
+      expression: "form.father_husbandNid"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.father_husbandNid
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "father_husbandNid", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -5989,12 +6275,12 @@ var render = function render() {
     attrs: {
       "for": ""
     }
-  }, [_vm._v("সন্তান জন্মদানের স্থান")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("স্ত্রীর নাম")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.form.place_of_childbirth,
-      expression: "form.place_of_childbirth"
+      value: _vm.form.wifeName,
+      expression: "form.wifeName"
     }],
     staticClass: "form-control",
     attrs: {
@@ -6002,13 +6288,387 @@ var render = function render() {
       required: ""
     },
     domProps: {
-      value: _vm.form.place_of_childbirth
+      value: _vm.form.wifeName
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
 
-        _vm.$set(_vm.form, "place_of_childbirth", $event.target.value);
+        _vm.$set(_vm.form, "wifeName", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("স্ত্রীর জাতীয় পরিচয়পত্র নম্বর")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.wifeNid,
+      expression: "form.wifeNid"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.wifeNid
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "wifeNid", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("পরিবারের সদস্য সংখ্যা")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.familyMenber,
+      expression: "form.familyMenber"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.familyMenber
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "familyMenber", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("বিভাগ")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.Pdivision,
+      expression: "Pdivision"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "division",
+      id: "division",
+      required: ""
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.Pdivision = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.getdistrictFun]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("বিভাগ নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.getdivisions, function (div) {
+    return _c("option", {
+      key: div.id,
+      domProps: {
+        value: div.id
+      }
+    }, [_vm._v(_vm._s(div.bn_name) + "\n                                ")]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("জেলা")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.applicant_present_district,
+      expression: "applicant_present_district"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "district",
+      id: "district",
+      required: ""
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.applicant_present_district = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.getthanaFun]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("জেলা নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.getdistricts, function (dist) {
+    return _c("option", {
+      key: dist.id,
+      domProps: {
+        value: dist.id
+      }
+    }, [_vm._v(_vm._s(dist.bn_name) + "\n                            ")]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("উপজেলা/থানা")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.thana,
+      expression: "thana"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "thana",
+      id: "thana",
+      required: ""
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.thana = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.getuniounFun]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("উপজেলা নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.getthanas, function (thana) {
+    return _c("option", {
+      key: thana.id,
+      domProps: {
+        value: thana.id
+      }
+    }, [_vm._v(_vm._s(thana.bn_name))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("ইউনিয়ন")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.unionName,
+      expression: "form.unionName"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "thana",
+      id: "thana",
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.form, "unionName", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("ইউনিয়ন নির্বাচন করুন")]), _vm._v(" "), _vm._l(_vm.getuniouns, function (union) {
+    return _c("option", {
+      key: union.id,
+      domProps: {
+        value: union.bn_name
+      }
+    }, [_vm._v(_vm._s(union.bn_name))]);
+  })], 2)])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("ওয়ার্ড নং")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.wordNo,
+      expression: "form.wordNo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "word_no",
+      required: ""
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+
+        _vm.$set(_vm.form, "wordNo", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("ওয়াড নং")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "1"
+    }
+  }, [_vm._v("১")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "2"
+    }
+  }, [_vm._v("২")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "3"
+    }
+  }, [_vm._v("৩")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "4"
+    }
+  }, [_vm._v("৪")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "5"
+    }
+  }, [_vm._v("৫")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "6"
+    }
+  }, [_vm._v("৬")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "7"
+    }
+  }, [_vm._v("৭")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "8"
+    }
+  }, [_vm._v("৮")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "9"
+    }
+  }, [_vm._v("৯")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("গ্রাম/মহল্লা")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.village,
+      expression: "form.village"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.village
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "village", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "labelColor",
+    attrs: {
+      "for": ""
+    }
+  }, [_vm._v("হোল্ডিং নং")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.holdingNo,
+      expression: "form.holdingNo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.holdingNo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "holdingNo", $event.target.value);
       }
     }
   })])])]), _vm._v(" "), _c("div", {
@@ -6020,67 +6680,152 @@ var render = function render() {
       type: "submit",
       variant: "primary"
     }
-  }, [_vm._v("অনুমোদন করুন")])], 1)])])]);
+  }, [_vm._v("সাবমিট")])], 1)])]), _vm._v(" "), _c("b-modal", {
+    attrs: {
+      id: _vm.infoModal.id,
+      size: "xl",
+      title: _vm.infoModal.title,
+      "ok-only": "",
+      "ok-disabled": "",
+      "no-close-on-esc": "",
+      "no-close-on-backdrop": ""
+    },
+    scopedSlots: _vm._u([{
+      key: "modal-footer",
+      fn: function fn() {
+        return [_c("div")];
+      },
+      proxy: true
+    }])
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("আইডি নং :")]), _vm._v(" " + _vm._s(_vm.form.id_no))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("সুবিধাভোগীর নাম :")]), _vm._v(" " + _vm._s(_vm.form.name))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.nidNo))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("মোবাইল নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.mobileNo))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পেশা :")]), _vm._v(" " + _vm._s(_vm.form.occupation))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("জন্ম তারিখ :")]), _vm._v(" " + _vm._s(_vm.form.dateOfBirth))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতা/স্বামী :")]), _vm._v(" " + _vm._s(_vm.form.father_husband))]), _vm._v(" "), _vm.form.father_husband == "পিতা" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতার নাম :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandName))]) : _vm._e(), _vm._v(" "), _vm.form.father_husband == "স্বামী" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্বামী নাম :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandName))]) : _vm._e(), _vm._v(" "), _vm.form.father_husband == "পিতা" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতার জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandNid))]) : _vm._e(), _vm._v(" "), _vm.form.father_husband == "স্বামী" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্বামী জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.form.father_husbandNid))]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্ত্রীর নাম :")]), _vm._v(" " + _vm._s(_vm.form.wifeName))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্ত্রীর জাতীয় পরিচয়পত্র নম্বর  :")]), _vm._v(" " + _vm._s(_vm.form.wifeNid))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পরিবারের সদস্য সংখ্যা :")]), _vm._v(" " + _vm._s(_vm.form.familyMenber))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("বিভাগ :")]), _vm._v(" " + _vm._s(_vm.form.district))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("জেলা :")]), _vm._v(" " + _vm._s(_vm.form.district))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("উপজেলা/থানা :")]), _vm._v(" " + _vm._s(_vm.form.upazila))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("ইউনিয়ন :")]), _vm._v(" " + _vm._s(_vm.form.unionName))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("ওয়ার্ড নং :")]), _vm._v(" " + _vm._s(_vm.form.wordNo))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("গ্রাম/মহল্লা :")]), _vm._v(" " + _vm._s(_vm.form.village))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("হোল্ডিং নং :")]), _vm._v(" " + _vm._s(_vm.form.holdingNo))])]), _vm._v(" "), _c("form", {
+    staticStyle: {
+      "margin-top": "50px"
+    },
+    on: {
+      submit: function submit($event) {
+        $event.stopPropagation();
+        $event.preventDefault();
+        return _vm.finalSubmit.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "text-center",
+    staticStyle: {
+      width: "50%",
+      margin: "0 auto"
+    }
+  }, [_c("h3", [_vm._v("আপনার আবেদনটি সফল করার জন্য Confirm বাটন এ চাপ দিন")]), _vm._v(" "), !_vm.submitLoad ? _c("button", {
+    staticClass: "btn btn-info",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("Confirm")]) : _vm.submitLoad ? _c("span", {
+    staticClass: "btn btn-info"
+  }, [_vm._v("Please Wait...")]) : _vm._e()])])])], 1);
 };
 
 var staticRenderFns = [function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("span", {
+  return _c("label", {
     staticClass: "labelColor",
     attrs: {
       "for": ""
     }
-  }, [_vm._v("আইডি নং : "), _c("span", {
+  }, [_vm._v("সহায়তার ধরন"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("span", {
+  return _c("label", {
     staticClass: "labelColor",
     attrs: {
       "for": ""
     }
-  }, [_vm._v("গর্ভবতী মহিলার নাম : "), _c("span", {
+  }, [_vm._v("সুবিধাভোগীর নাম"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("span", {
+  return _c("label", {
     staticClass: "labelColor",
     attrs: {
       "for": ""
     }
-  }, [_vm._v("গর্ভবতী মহিলার জাতীয় পরিচয়পত্র : "), _c("span", {
+  }, [_vm._v("জাতীয় পরিচয়পত্র নম্বর"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("span", {
+  return _c("label", {
     staticClass: "labelColor",
     attrs: {
       "for": ""
     }
-  }, [_vm._v("স্বামীর নাম : "), _c("span", {
+  }, [_vm._v("মোবাইল নম্বর"), _c("span", {
     staticClass: "text-danger"
   })]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("span", {
+  return _c("label", {
     staticClass: "labelColor",
     attrs: {
       "for": ""
     }
-  }, [_vm._v("স্বামীর জাতীয় পরিচয়পত্র : "), _c("span", {
+  }, [_vm._v("পেশা"), _c("span", {
     staticClass: "text-danger"
   })]);
 }];
@@ -6126,10 +6871,75 @@ var render = function render() {
       }
     }
   }, [_vm._v("Home")])], 1), _vm._v(" "), _c("li", [_vm._v("আবেদনের তালিকা")])])]), _vm._v(" "), _c("div", {
+    staticClass: "text-right"
+  }, [_c("router-link", {
+    staticClass: "btn btn-info",
+    attrs: {
+      to: {
+        name: "sonodeadd"
+      }
+    }
+  }, [_vm._v("নতুন সেবা গ্রহিতা যোগ করুন")])], 1), _vm._v(" "), _c("div", {
     staticClass: "card"
   }, [_c("div", {
     staticClass: "card-header"
-  }, [_vm.TotalRows > 20 ? _c("nav", {
+  }, [_c("h3", [_vm._v("খুঁজুন")]), _vm._v(" "), _c("form", {
+    staticClass: "d-flex",
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.sonodSearch.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group",
+    staticStyle: {
+      width: "250px"
+    }
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.userdata,
+      expression: "form.userdata"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: " রেজিস্ট্রেশন নাম্বার/নাম/জাতীয় পরিচয় পত্র নম্বর/মোবাইল নম্বর (যে কোন একটি তথ্য) এন্ট্রি করুন"
+    },
+    domProps: {
+      value: _vm.form.userdata
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "userdata", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "form-group text-center"
+  }, [_vm.isSending ? _c("button", {
+    staticClass: "btn btn-info text-center",
+    staticStyle: {
+      "font-size": "23px",
+      "margin-left": "10px"
+    },
+    attrs: {
+      type: "button",
+      disabled: ""
+    }
+  }, [_vm._v("Wait...")]) : _c("button", {
+    staticClass: "btn btn-info text-center",
+    staticStyle: {
+      "font-size": "23px",
+      "margin-left": "10px"
+    },
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("খুঁজুন")])])]), _vm._v(" "), _vm.TotalRows > 20 ? _c("nav", {
     attrs: {
       "aria-label": "Page navigation example"
     }
@@ -6255,63 +7065,17 @@ var render = function render() {
       staticClass: "sonodTd"
     }, [_vm._v(_vm._s(item.village))]), _vm._v(" "), _c("td", {
       staticClass: "sonodTd"
-    }, [_vm.editRoute != "" ? _c("router-link", {
-      staticClass: "btn btn-info mr-1 mt-1",
-      attrs: {
-        size: "sm",
-        to: {
-          name: _vm.editRoute,
-          params: {
-            id: item.id
-          }
-        }
-      }
-    }, [_vm._v("প্রসব অনুমোদন করুন")]) : _vm._e(), _vm._v(" "), _vm.Vaccination != "" ? _c("router-link", {
-      staticClass: "btn btn-success mr-1 mt-1",
-      attrs: {
-        size: "sm",
-        to: {
-          name: _vm.Vaccination,
-          params: {
-            id: item.id
-          }
-        }
-      }
-    }, [_vm._v("টিকা প্রদান করুন")]) : _vm._e(), _vm._v(" "), _vm.applicationRoute != "" ? _c("a", {
-      staticClass: "btn btn-success mr-1 mt-1",
-      attrs: {
-        size: "sm",
-        target: "_blank",
-        href: _vm.applicationRoute + "/d/" + item.id
-      }
-    }, [_vm._v("টিকা কার্ড")]) : _vm._e(), _vm._v(" "), _vm.viewRoute != "" ? _c("span", {
-      staticClass: "btn btn-info mr-1 mt-1",
-      attrs: {
-        size: "sm"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.info(item, index, $event.target);
-        }
-      }
-    }, [_vm._v("আবেদনপত্র দেখুন")]) : _vm._e(), _vm._v(" "), _vm.applicationRoute2 != "" ? _c("a", {
-      staticClass: "btn btn-success mr-1 mt-1",
-      attrs: {
-        size: "sm",
-        target: "_blank",
-        href: _vm.applicationRoute2 + "/d/" + item.id
-      }
-    }, [_vm._v("বিস্তারিত")]) : _vm._e(), _vm._v(" "), _vm.approveRoute != "" && item.payment_status == "Unpaid" ? _c("span", {
+    }, [_vm.applicationRoute2 != "" ? _c("span", {
       staticClass: "btn btn-success mr-1 mt-1",
       attrs: {
         size: "sm"
       },
       on: {
         click: function click($event) {
-          return _vm.approve(_vm.approveRoute, item.id, _vm.approveData, $event.target, _vm.approveType, item);
+          return _vm.info(item, item.id, $event.target);
         }
       }
-    }, [_vm._v("অনুমোদন")]) : _vm.approveRoute != "" && item.payment_status == "Paid" ? _c("span", {
+    }, [_vm._v("বিস্তারিত")]) : _vm._e(), _vm._v(" "), _vm.approveRoute != "" ? _c("span", {
       staticClass: "btn btn-success mr-1 mt-1",
       attrs: {
         size: "sm"
@@ -6321,41 +7085,17 @@ var render = function render() {
           return _vm.approve("/api/sonod", item.id, _vm.approveData, $event.target, "apiAction", item);
         }
       }
-    }, [_vm._v("অনুমোদন")]) : _vm._e(), _vm._v(" "), item.payment_status == "Unpaid" && item.stutus == "approved" && _vm.payRoute != "" ? _c("span", {
-      staticClass: "btn btn-info mr-1 mt-1",
-      attrs: {
-        size: "sm"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.paynow(_vm.payRoute, item.id, $event.target);
-        }
-      }
-    }, [_vm._v("ফি পরিশোধ করুন")]) : _vm._e(), _vm._v(" "), item.stutus == "approved" ? _c("a", {
-      staticClass: "btn btn-info mr-1 mt-1",
-      attrs: {
-        href: "/invoice/d/" + item.id,
-        target: "_blank",
-        size: "sm"
-      }
-    }, [_vm._v("রশিদ প্রিন্ট")]) : _vm._e(), _vm._v(" "), item.stutus == "approved" && item.payment_status == "Paid" ? _c("a", {
-      staticClass: "btn btn-info mr-1 mt-1",
-      attrs: {
-        href: "/sonod/d/" + item.id,
-        target: "_blank",
-        size: "sm"
-      }
-    }, [_vm._v("সনদ")]) : _vm._e(), _vm._v(" "), _vm.cancelRoute != "" ? _c("span", {
+    }, [_vm._v("অনুমোদন")]) : _vm._e(), _vm._v(" "), _vm.cancelRoute != "" ? _c("span", {
       staticClass: "btn btn-danger mr-1 mt-1",
       attrs: {
         size: "sm"
       },
       on: {
         click: function click($event) {
-          return _vm.cancel(_vm.cancelRoute, item.id, "cancel", $event.target);
+          return _vm.cancel("/api/sonod", item.id, "cancel", $event.target);
         }
       }
-    }, [_vm._v("বাতিল করুন")]) : _vm._e()], 1)]);
+    }, [_vm._v("বাতিল করুন")]) : _vm._e()])]);
   }), 0), _vm._v(" "), _c("tfoot")])]), _vm._v(" "), _c("div", {
     staticClass: "card-footer"
   }, [_vm.TotalRows > 20 ? _c("nav", {
@@ -6453,27 +7193,45 @@ var render = function render() {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("আইডি নং :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.id_no))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("গর্ভবতী মহিলার নাম :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.name))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("সুবিধাভোগীর নাম :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.name))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("স্বামীর নাম :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.husband_name))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.nidNo))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("বিভাগ :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.division))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("মোবাইল নম্বর :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.mobileNo))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পেশা :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.occupation))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("জন্ম তারিখ :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.dateOfBirth))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতা/স্বামী :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.father_husband))]), _vm._v(" "), _vm.infoModal.content.father_husband == "পিতা" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতার নাম :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.father_husbandName))]) : _vm._e(), _vm._v(" "), _vm.infoModal.content.father_husband == "স্বামী" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্বামী নাম :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.father_husbandName))]) : _vm._e(), _vm._v(" "), _vm.infoModal.content.father_husband == "পিতা" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পিতার জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.father_husbandNid))]) : _vm._e(), _vm._v(" "), _vm.infoModal.content.father_husband == "স্বামী" ? _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্বামী জাতীয় পরিচয়পত্র নম্বর :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.father_husbandNid))]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্ত্রীর নাম :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.wifeName))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("স্ত্রীর জাতীয় পরিচয়পত্র নম্বর  :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.wifeNid))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("পরিবারের সদস্য সংখ্যা :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.familyMenber))]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4"
+  }, [_c("b", [_vm._v("বিভাগ :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.district))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("জেলা :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.district))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("উপজেলা/থানা :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.upazila))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("পোষ্ট অফিস :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.post_office))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("ইউনিয়ন :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.unionName))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("ওয়ার্ড নং :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.word_number))]), _vm._v(" "), _c("div", {
+  }, [_c("b", [_vm._v("ওয়ার্ড নং :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.wordNo))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
   }, [_c("b", [_vm._v("গ্রাম/মহল্লা :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.village))]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("শেষ মাসিকের তারিখ :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.date_of_last_menstrual_period))]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("সম্ভাব্য প্রসবের তারিখ :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.probable_date_of_delivery))]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4"
-  }, [_c("b", [_vm._v("গ্রাভিড (কত তম গর্ভ) :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.how_many_wombs))])])]), _vm._v(" "), _c("b-modal", {
+  }, [_c("b", [_vm._v("হোল্ডিং নং :")]), _vm._v(" " + _vm._s(_vm.infoModal.content.holdingNo))])])]), _vm._v(" "), _c("b-modal", {
     attrs: {
       id: _vm.actionModal.id,
       size: "xl",
@@ -8042,6 +8800,13 @@ var routes = [//Auth Routes
   path: "".concat(prefix, "/sonod/action/Vaccination/:id"),
   component: Vaccination,
   name: 'Vaccination',
+  meta: {
+    layout: adminlayout
+  }
+}, {
+  path: "".concat(prefix, "/sonod/add/by/admin"),
+  component: sonodedit,
+  name: 'sonodeadd',
   meta: {
     layout: adminlayout
   }

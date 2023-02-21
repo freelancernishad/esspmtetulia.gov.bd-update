@@ -37,7 +37,7 @@
                                 সেবা গ্রহণের জন্য রেজিস্ট্রেশন করুন
                             </h6>
                         </div>
-
+<!--
 
                         <router-link class="col-lg-4 mt-3 mb-3 text-center" :to="{ name: 'childApplication' }">
                             <div class="serviceBox">
@@ -59,14 +59,15 @@
                                     টিকা রেজিস্ট্রেশন
                                 </div>
                             </div>
-                        </router-link>
-                        <router-link class="col-lg-4 mt-3 mb-3 text-center" :to="{ name: 'childApplication' }">
+                        </router-link> -->
+
+                        <router-link class="col-lg-12 mt-3 mb-3 text-center" :to="{ name: 'childApplication' }">
                             <div class="serviceBox">
                                 <div class="serviceLogo">
                                     <img :src="$asseturl+'assets/icon/icon-256x256.png'" width="115px" alt="" />
                                 </div>
                                 <div class="serviceTitle defaltTextColor">
-                                    টিকা কার্ড যাচাই
+                                    রেজিস্ট্রেশন
                                 </div>
                             </div>
                         </router-link>
@@ -80,7 +81,7 @@
 
 
 
-<div class="row">
+<div class="row d-none">
 
                          <div class="col-md-12">
                             <h6 class="serviceTitle position-relative defaltColor">
