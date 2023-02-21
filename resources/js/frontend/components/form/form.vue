@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label for="" class="labelColor">জাতীয় পরিচয়পত্র নম্বর<span
                                     class="text-danger"></span></label>
-                            <input type="text" class="form-control" v-model="form.pregnant_woman_nid" required>
+                            <input type="text" class="form-control" v-model="form.nidNo" required>
                         </div>
                     </div>
 
@@ -44,7 +44,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="" class="labelColor">মোবাইল নম্বর<span class="text-danger"></span></label>
-                            <input type="text" class="form-control" v-model="form.husband_name" required>
+                            <input type="text" class="form-control" v-model="form.mobileNo" required>
                         </div>
                     </div>
 
@@ -52,7 +52,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="" class="labelColor">পেশা<span class="text-danger"></span></label>
-                            <input type="text" class="form-control" v-model="form.husband_name_nid" required>
+                            <input type="text" class="form-control" v-model="form.occupation" required>
                         </div>
                     </div>
 
@@ -62,7 +62,15 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="" class="labelColor">জন্ম তারিখ</label>
-                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+
+                            <select class="form-control" v-model="burthdate.day" required>
+                                <option value="">সাল নির্বাচন করুন</option>
+                            </select>
+
+
+                            <input type="text" class="form-control" v-model="burthdate.day" required>
+                            <input type="text" class="form-control" v-model="burthdate.month" required>
+                            <input type="text" class="form-control" v-model="burthdate.year" required>
                         </div>
                     </div>
 
@@ -72,10 +80,10 @@
                         <div class="form-group">
                             <label for="" class="labelColor">পিতা/স্বামী</label>
 
-                            select
-
-
-                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                            <select v-model="form.father_husband" class="form-control">
+                                <option value="পিতা">পিতা</option>
+                                <option value="স্বামী">স্বামী</option>
+                            </select>
                         </div>
                     </div>
 
@@ -83,15 +91,17 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">পিতা/স্বামীর নাম</label>
-                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                            <label for="" class="labelColor" v-if="form.father_husband=='পিতা'">পিতার নাম</label>
+                            <label for="" class="labelColor" v-else-if="form.father_husband=='স্বামী'">স্বামীর নাম</label>
+                            <input type="text" class="form-control" v-model="form.father_husbandName" required>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="" class="labelColor">পিতা/স্বামীর জাতীয় পরিচয়পত্র নম্বর</label>
-                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                            <label for="" class="labelColor"  v-if="form.father_husband=='পিতা'">পিতার জাতীয় পরিচয়পত্র নম্বর</label>
+                            <label for="" class="labelColor" v-else-if="form.father_husband=='স্বামী'">স্বামীর জাতীয় পরিচয়পত্র নম্বর</label>
+                            <input type="text" class="form-control" v-model="form.father_husbandNid" required>
                         </div>
                     </div>
 
@@ -99,7 +109,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="" class="labelColor">স্ত্রীর নাম</label>
-                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                            <input type="text" class="form-control" v-model="form.wifeName" required>
                         </div>
                     </div>
 
@@ -107,7 +117,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="" class="labelColor">স্ত্রীর জাতীয় পরিচয়পত্র নম্বর</label>
-                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                            <input type="text" class="form-control" v-model="form.wifeNid" required>
                         </div>
                     </div>
 
@@ -115,7 +125,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="" class="labelColor">পরিবারের সদস্য সংখ্যা</label>
-                            <input type="text" class="form-control" v-model="form.mobile_no" required>
+                            <input type="text" class="form-control" v-model="form.familyMenber" required>
                         </div>
                     </div>
 
@@ -174,7 +184,7 @@
                     <div class="form-group">
                         <label for="" class="labelColor">ইউনিয়ন</label>
 
-                        <select class='form-control' name="thana" id="thana" v-model="form.union"  required>
+                        <select class='form-control' name="thana" id="thana" v-model="form.unionName"  required>
                             <option value="">ইউনিয়ন নির্বাচন করুন</option>
                             <option v-for="union in getuniouns" :key="union.id" :value="union.bn_name">{{ union.bn_name
                             }}</option>
@@ -184,17 +194,10 @@
                     </div>
                 </div>
 
-
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="" class="labelColor">পোষ্ট অফিস</label>
-                        <input type="text" class="form-control" v-model="form.post_office" required>
-                    </div>
-                </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="" class="labelColor">ওয়ার্ড নং</label>
-                        <select v-model="form.word_number" id="word_no" class="form-control" required>
+                        <select v-model="form.wordNo" id="word_no" class="form-control" required>
                             <option value="">ওয়াড নং</option>
                             <option value="1">১</option>
                             <option value="2">২</option>
@@ -222,7 +225,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="" class="labelColor">হোল্ডিং নং</label>
-                        <input type="date" class="form-control" v-model="form.date_of_last_menstrual_period" required>
+                        <input type="date" class="form-control" v-model="form.holdingNo" required>
                     </div>
                 </div>
 
@@ -312,24 +315,35 @@ export default {
                 content_id: '',
             },
             submitLoad: false,
+            burthdate:{
+                day:'',
+                month:'',
+                year:'',
+            },
+
             form: {
                 id_no:'',
+                vataName:'',
                 name:'',
-                pregnant_woman_nid:'',
+                nidNo:'',
+                mobileNo:'',
                 husband_name:'',
-                husband_name_nid:'',
-                mobile_no:'',
+                occupation:'',
+
+                dateOfBirth:'',
+
+                father_husband:'পিতা',
+                father_husbandName:'',
+                father_husbandNid:'',
+                wifeName:'',
+                familyMenber:'',
                 division:'',
                 district:'',
                 upazila:'',
-                union:'',
-                post_office:'',
-                word_number:'',
+                unionName:'',
+                wordNo:'',
                 village:'',
-                date_of_last_menstrual_period:'',
-                probable_date_of_delivery:'',
-                how_many_wombs:'',
-                how_many_children:'',
+                holdingNo:'',
 
             },
             getdivisions: {},
